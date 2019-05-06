@@ -1,0 +1,78 @@
+<style lang="less">
+.contain {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100vh;
+    width: 100vw;
+}
+.contain-userinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+}
+.contain-userinfo image {
+    width: 70px;
+    height: 70px;
+}
+.contain-authorize {
+    height: 20vh;
+}
+.contain-authorize button {
+    width: 40vw;
+}
+</style>
+
+<template>
+    <view class="contain">
+        <view class="contain-userinfo">
+            <image src="{{avatarUrl}}" />
+            <text>{{name}}</text>
+        </view>
+        <view class="contain-authorize">
+            <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">获取登录授权</button>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import util from '@/common/js/util';
+
+export default class Authorize extends wepy.page {
+    config = {
+        backgroundTextStyle: '#fff',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '授权登录',
+        navigationBarTextStyle: '#fff'
+    };
+    data = {
+        avatarUrl: '',
+        name: ''
+    };
+    methods = {
+        onGotUserInfo(e) {
+            try {
+                const userInfo = e.detail.userInfo;
+                this.$parent.globalData.userInfo = userInfo;
+                wepy.setStorageSync('userInfo', userInfo);
+                this.avatarUrl = userInfo.avatarUrl;
+                this.name = userInfo.nickName;
+                setTimeout(() => {
+                    wepy.switchTab({
+                        url: '/pages/index/index'
+                    });
+                }, 1000);
+            } catch (e) {
+                util.toast('请打开授权');
+            }
+        }
+    };
+    watch = {};
+}
+</script>
+
+
+

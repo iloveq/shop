@@ -1,0 +1,13 @@
+{
+  "description": "a shop",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wx9d1aa98c664af710",
+  "projectname": "shop",
+  "miniprogramRoot": "./dist"
+}
