@@ -1,0 +1,32 @@
+<style lang="less">
+</style>
+
+<template>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class CategoryPage extends wepy.page {
+    config = {
+        backgroundTextStyle: '#fff',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: 'mine',
+        navigationBarTextStyle: '#fff'
+    };
+
+    data = {};
+
+    components = {};
+
+    mixins = [];
+
+    computed = {};
+
+    watch = {};
+
+    methods = {};
+
+    events = {};
+}
+</script>

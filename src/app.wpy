@@ -13,22 +13,52 @@
 import wepy from 'wepy'
 import 'wepy-async-function'
 
-
 export default class extends wepy.app {
   config = {
-    pages: [
-      'pages/index'
+    pages:[
+      'pages/home/main',
+      'pages/home/category',
+      'pages/home/shopcar',
+      'pages/home/mine',
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    tabBar: {
+            color: '#ccc',
+            selectedColor: '#fff',
+            borderStyle: '#000',
+            backgroundColor: '#fff',
+            list: [
+                {
+                    pagePath: 'pages/home/main',
+                    selectedIconPath: 'image/home/main_sel.png',
+                    iconPath: 'image/home/main_nor.png'
+                },
+                {
+                    pagePath: 'pages/home/category',
+                    selectedIconPath: 'image/home/category_sel.png',
+                    iconPath: 'image/home/category_nor.png'
+                },
+                {
+                    pagePath: 'pages/home/shopcar',
+                    selectedIconPath: 'image/home/shopcar_sel.png',
+                    iconPath: 'image/home/shopcar_nor.png'
+                },
+                {
+                    pagePath: 'pages/home/mine',
+                    selectedIconPath: 'image/home/mine_sel.png',
+                    iconPath: 'image/home/mine_nor.png'
+                }
+            ]
+        }
   }
 
   globalData = {
-    userInfo: null
+    userInfo: ''
   }
 
   constructor () {
@@ -38,6 +68,7 @@ export default class extends wepy.app {
 
   onLaunch() {
     this.testAsync()
+    this.getUserInfo()
   }
 
   sleep (s) {

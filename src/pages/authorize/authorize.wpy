@@ -39,7 +39,7 @@
 
 <script>
 import wepy from 'wepy';
-import util from '@/common/js/util';
+import utils from '@/common/utils';
 
 export default class Authorize extends wepy.page {
     config = {
@@ -62,11 +62,11 @@ export default class Authorize extends wepy.page {
                 this.name = userInfo.nickName;
                 setTimeout(() => {
                     wepy.switchTab({
-                        url: '/pages/index/index'
+                        url: '/pages/home/main'
                     });
                 }, 1000);
             } catch (e) {
-                util.toast('请打开授权');
+                utils.toast('请打开授权');
             }
         }
     };

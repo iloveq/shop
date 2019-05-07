@@ -1,13 +1,39 @@
 {
   "description": "a shop",
+  "packOptions": {
+		"ignore": []
+	},
   "setting": {
-    "urlCheck": true,
-    "es6": true,
-    "postcss": false,
-    "minified": false
+    "urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
   },
   "compileType": "miniprogram",
   "appid": "wx9d1aa98c664af710",
   "projectname": "shop",
-  "miniprogramRoot": "./dist"
+  "miniprogramRoot": "dist/",
+  "scripts": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": 0,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": []
+		}
+	}
 }
