@@ -1,8 +1,8 @@
 const API = {
-   host: 'http://127.0.0.1:8996'
+   host: 'http://172.30.14.202:8030/shop'
 }
 
-const ajax = ({url = '',type = 'GET',para = {},isUseOrigin = true } = {}) => {
+const ajax = ({url = '',type = 'POST',para = {},isUseOrigin = true } = {}) => {
 
     return new Promise((resolve, reject) => {
         let currentUrl = `${API.host}/${url}`
@@ -14,14 +14,16 @@ const ajax = ({url = '',type = 'GET',para = {},isUseOrigin = true } = {}) => {
             header: {
                 'content-type': 'application/json',
             },
-            type: type,
+            method: type,
             data: para,
             success(res) {
                 let content = res.data.content;
-                if (!isUseOrigin) {
-                    content = res.data.data;
+                if(res.data.code==200){
+                    resolve(content);
+                }else{
+                    reject(res.data.code); 
                 }
-                resolve(content);
+                
             },
             fail(err) {
                 reject(err);

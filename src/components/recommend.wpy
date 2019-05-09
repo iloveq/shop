@@ -1,19 +1,13 @@
 <!-- 推荐 -->
 <style lang="less">
-.recommend {
-    
-}
-.recommend-contain {
-    padding: 0 20px;
-}
+
 .recommend-title {
     font-size: 12px;
     border-bottom: 1px solid #f0f0f0;
-    padding: 5px 0;
+    padding: 5px;
+    
     text-align: center;
-    icon {
-        font-size: 12px;
-    }
+   
 }
 .qlist {
         display:flex;
@@ -28,6 +22,7 @@
     }
     .qlist-cover {
         width: 49%;
+        height: 110px;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -53,7 +48,7 @@
     <view class="recommend">
         <view class="recommend-contain">
             <view class="recommend-title">
-                <icon class="iconfont">&#xe636;</icon><text>热门推荐</text>
+                <text>热门推荐</text>
             </view>
              <view class="qlist">
                 <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
