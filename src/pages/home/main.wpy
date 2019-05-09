@@ -5,6 +5,7 @@
     <view class="container">
         <view>
             <banner :bannerList.sync="bannerList"></banner>
+            <recommend :recommendList.sync="recommendList"></recommend>
         </view>
     </view>
 
@@ -13,6 +14,7 @@
 <script>
 import wepy from 'wepy';
 import Banner from '@/components/banner';
+import Recommend from '@/components/recommend';
 
 export default class MainPage extends wepy.page {
     config = {
@@ -24,10 +26,13 @@ export default class MainPage extends wepy.page {
 
     data = {
         bannerList: [],
+        recommendList: [],
+        currentPage: 1
     };
 
     components = {
         banner:Banner,
+        recommend: Recommend
     };
 
     methods = {};
@@ -41,6 +46,37 @@ export default class MainPage extends wepy.page {
 
     async loadingMainPage() {
         this.bannerList=[{"src":"https://ss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/f703738da9773912c2273a36f5198618367ae260.jpg","url":"1"},{"src":"https://gss0.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/562c11dfa9ec8a13e706fbbffa03918fa0ecc055.jpg","url":"2"}]
+        this.recommendList=[{
+        "name": "sss",
+        "desc": "111下单享立减",
+        "url": "1",
+        "src": "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/9825bc315c6034a8abc1179fc613495409237689.jpg"
+    }, {
+        "name": "领券中心",
+        "desc": "2下单享立减",
+        "url": "2",
+        "src": "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/9825bc315c6034a8abc1179fc613495409237689.jpg"
+    }, {
+        "name": "领券中心",
+        "desc": "3下单享立减",
+        "url": "3",
+        "src": "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/9825bc315c6034a8abc1179fc613495409237689.jpg"
+    }, {
+        "name": "领券中心",
+        "desc": "4下单享立减",
+        "url": "4",
+        "src": "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/9825bc315c6034a8abc1179fc613495409237689.jpg"
+    }, {
+        "name": "领券中心",
+        "desc": "5下单享立减",
+        "url": "5",
+        "src": "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/9825bc315c6034a8abc1179fc613495409237689.jpg"
+    }, {
+        "name": "领券中心",
+        "desc": "6下单享立减",
+        "url": "6",
+        "src": "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/9825bc315c6034a8abc1179fc613495409237689.jpg"
+    }]
         wx.hideLoading();
         this.$apply();
     }

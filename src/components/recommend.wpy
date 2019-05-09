@@ -1,0 +1,96 @@
+<!-- 推荐 -->
+<style lang="less">
+.recommend {
+    
+}
+.recommend-contain {
+    padding: 0 20px;
+}
+.recommend-title {
+    font-size: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 5px 0;
+    text-align: center;
+    icon {
+        font-size: 12px;
+    }
+}
+.qlist {
+        display:flex;
+        flex-wrap: wrap;
+    }
+    .qlist-line {
+        border-right: 1rpx solid #eee;
+    }
+    .qlist-line2 {
+        border-top: 1rpx solid #eee;
+        border-bottom: 1rpx solid #eee;
+    }
+    .qlist-cover {
+        width: 49%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        image {
+            width: 160rpx;
+            height: 160rpx;
+        }
+    }
+    .qlist-cover-title {
+        font-size: 36rpx;
+        display: block;
+        color: #000;
+    }
+    .qlist-cover-desc {
+        font-size: 22rpx;
+        display: block;
+        color: #000;
+        margin-top: 10rpx;
+    }
+</style>
+
+<template>
+    <view class="recommend">
+        <view class="recommend-contain">
+            <view class="recommend-title">
+                <icon class="iconfont">&#xe636;</icon><text>热门推荐</text>
+            </view>
+             <view class="qlist">
+                <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
+                    class="qlist-cover {{ index % 2 == 0 ? 'qlist-line' : ''}}  {{ index == 2 || index == 3 ? 'qlist-line2' : ''}}"  
+                    @tap="jumpDetail({{item.url}})">
+                    <view>
+                        <text class="qlist-cover-title">{{item.name}}</text>
+                        <text class="qlist-cover-desc">{{item.desc}}</text>
+                    </view>
+                    <image src="{{item.src}}" />
+                </view>
+             </view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Recommend extends wepy.component {
+    props = {
+        recommendList: {
+            type: Array,
+            default: []
+        }
+    }
+
+    data = {
+
+    };
+    
+    methods = {
+
+    };
+}
+</script>
+
+
+
+
