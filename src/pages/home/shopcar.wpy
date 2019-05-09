@@ -9,10 +9,10 @@
 import wepy from 'wepy';
 export default class CategoryPage extends wepy.page {
     config = {
-        backgroundTextStyle: '#fff',
+        backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
-        navigationBarTitleText: 'shop-car',
-        navigationBarTextStyle: '#fff'
+        navigationBarTitleText: 'Shopcar',
+        navigationBarTextStyle: 'white'
     };
 
 }

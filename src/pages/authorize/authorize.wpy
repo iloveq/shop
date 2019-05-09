@@ -43,10 +43,10 @@ import utils from '@/common/utils';
 
 export default class Authorize extends wepy.page {
     config = {
-        backgroundTextStyle: '#fff',
+         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
         navigationBarTitleText: '授权登录',
-        navigationBarTextStyle: '#fff'
+        navigationBarTextStyle: 'white'
     };
     data = {
         avatarUrl: '',
