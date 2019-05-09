@@ -15,18 +15,5 @@ export default class CategoryPage extends wepy.page {
         navigationBarTextStyle: '#fff'
     };
 
-    data = {};
-
-    components = {};
-
-    mixins = [];
-
-    computed = {};
-
-    watch = {};
-
-    methods = {};
-
-    events = {};
 }
 </script>

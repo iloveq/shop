@@ -2,11 +2,18 @@
 </style>
 
 <template>
+    <view class="container">
+        <view>
+            <banner :bannerList.sync="bannerList"></banner>
+        </view>
+    </view>
 
 </template>
 
 <script>
 import wepy from 'wepy';
+import Banner from '@/components/banner';
+
 export default class MainPage extends wepy.page {
     config = {
         backgroundTextStyle: '#fff',
@@ -15,18 +22,28 @@ export default class MainPage extends wepy.page {
         navigationBarTextStyle: '#fff'
     };
 
-    data = {};
+    data = {
+        bannerList: [],
+    };
 
-    components = {};
-
-    mixins = [];
-
-    computed = {};
-
-    watch = {};
+    components = {
+        banner:Banner,
+    };
 
     methods = {};
 
-    events = {};
+    onReady(){
+        wx.showLoading({
+            title: '加载中'
+        });
+        this.loadingMainPage()
+    }
+
+    async loadingMainPage() {
+        this.bannerList=[{"src":"https://ss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/f703738da9773912c2273a36f5198618367ae260.jpg","url":"1"},{"src":"https://gss0.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/nuomi/pic/item/562c11dfa9ec8a13e706fbbffa03918fa0ecc055.jpg","url":"2"}]
+        wx.hideLoading();
+        this.$apply();
+    }
+
 }
 </script>

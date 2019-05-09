@@ -13,7 +13,10 @@
   "compileType": "miniprogram",
   "appid": "wx9d1aa98c664af710",
   "projectname": "shop",
-  "miniprogramRoot": "dist/",
+	"miniprogramRoot": "dist/",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
   "scripts": {},
 	"condition": {
 		"search": {
