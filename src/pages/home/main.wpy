@@ -53,7 +53,7 @@ export default class MainPage extends wepy.page {
     }
 
     async getRecommendList(){
-        var str = `{"pageNum":${this.currentPage},"pageSize": 8}`;
+        var str = `{"pageNum":${this.currentPage},"pageSize": 6}`;
         this.recommendList = this.recommendList.concat(await util.ajax({url:'suggestedGoodsList',para:JSON.parse(str)}));
         wx.hideLoading();
         this.$apply();

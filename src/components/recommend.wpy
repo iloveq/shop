@@ -2,11 +2,12 @@
 <style lang="less">
 
 .recommend-title {
-    font-size: 12px;
+    font-size: 14px;
+    margin-left: 15rpx;
     border-bottom: 1px solid #f0f0f0;
     padding: 5px;
-    
-    text-align: center;
+    text-align: start;
+    color: #000;
    
 }
 .qlist {
@@ -22,25 +23,28 @@
     }
     .qlist-cover {
         width: 49%;
-        height: 110px;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
+        flex-direction: column;
         image {
-            width: 160rpx;
-            height: 160rpx;
+            margin-top: 10rpx;
+            width: 90%;
+            height: 300rpx;
         }
     }
     .qlist-cover-title {
-        font-size: 36rpx;
+        margin-top: 10rpx;
+        font-size: 18rpx;
         display: block;
         color: #000;
     }
     .qlist-cover-desc {
-        font-size: 22rpx;
+        font-size: 20rpx;
         display: block;
-        color: #000;
+        color: red;
         margin-top: 10rpx;
+        margin-bottom: 8rpx
     }
 </style>
 
@@ -48,17 +52,15 @@
     <view class="recommend">
         <view class="recommend-contain">
             <view class="recommend-title">
-                <text>热门推荐</text>
+                <text>热门推荐：</text>
             </view>
              <view class="qlist">
                 <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
                     class="qlist-cover {{ index % 2 == 0 ? 'qlist-line' : ''}}  {{ index == 2 || index == 3 ? 'qlist-line2' : ''}}"  
                     @tap="jumpDetail({{item.url}})">
-                    <view>
-                        <text class="qlist-cover-title">{{item.name}}</text>
-                        <text class="qlist-cover-desc">{{item.desc}}</text>
-                    </view>
-                    <image src="{{item.url}}" />
+                    <image src="{{item.imageList[0].url}}" />
+                    <text class="qlist-cover-title">{{item.name}}</text>
+                    <text class="qlist-cover-desc">${{item.price}}</text>
                 </view>
              </view>
         </view>
