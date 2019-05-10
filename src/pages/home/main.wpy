@@ -28,7 +28,7 @@ export default class MainPage extends wepy.page {
     data = {
         bannerList: [],
         recommendList: [],
-        currentPage: 1
+        currentPage: 1,
     };
 
     components = {
@@ -47,29 +47,25 @@ export default class MainPage extends wepy.page {
 
     async loadingMainPage() {
         this.bannerList = await util.ajax({url:'bannerList'});
-        this.recommendList = await getRecommendList();
+        this.recommendList = this.getRecommendList();
         wx.hideLoading();
         this.$apply();
     }
 
-    getRecommendList(){
-
-        util.ajax({url:'suggestedGoodsList',para:{"pageNum": '${currentPage}',"pageSize": 0}}).then((res)=>{
-            wx.hideLoading();
-            this.recommendList.concat(res);
-        }).catch((err)=>{
-             wx.hideLoading();
-        });
+    async getRecommendList(){
+        var str = `{"pageNum":${this.currentPage},"pageSize": 8}`;
+        this.recommendList = this.recommendList.concat(await util.ajax({url:'suggestedGoodsList',para:JSON.parse(str)}));
+        wx.hideLoading();
         this.$apply();
     }
 
     onReachBottom() {
-        this.currentPage += 1;
+        this.currentPage++;
         console.log(`当前为第${this.currentPage}页`);
         wx.showLoading({
-            title: '加载中'
+            title: '加载中'
         });
-        getRecommendList();
+        this.getRecommendList();
     }
 
 }

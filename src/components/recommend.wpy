@@ -58,7 +58,7 @@
                         <text class="qlist-cover-title">{{item.name}}</text>
                         <text class="qlist-cover-desc">{{item.desc}}</text>
                     </view>
-                    <image src="{{item.src}}" />
+                    <image src="{{item.url}}" />
                 </view>
              </view>
         </view>
