@@ -35,7 +35,7 @@
               class="banner-cover">
                 <block wx:for="{{bannerList}}" wx:for-item="item" wx:for-index="index" wx:key="index">
                     <swiper-item @tap="jumpDetail({{item.url}})">
-                        <image src="{{item.src}}" />
+                        <image src="{{item.url}}" />
                     </swiper-item>
                 </block>
             </swiper>

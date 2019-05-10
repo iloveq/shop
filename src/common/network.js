@@ -1,5 +1,5 @@
 const API = {
-   host: 'http://172.30.14.202:8030/shop'
+   host: 'http://172.30.14.202:8030/shop/miaozu'
 }
 
 const ajax = ({url = '',type = 'POST',para = {},isUseOrigin = true } = {}) => {
@@ -17,7 +17,8 @@ const ajax = ({url = '',type = 'POST',para = {},isUseOrigin = true } = {}) => {
             method: type,
             data: para,
             success(res) {
-                let content = res.data.content;
+                let content = res.data.data;
+                console.log(content)
                 if(res.data.code==200){
                     resolve(content);
                 }else{

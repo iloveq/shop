@@ -46,14 +46,30 @@ export default class MainPage extends wepy.page {
     }
 
     async loadingMainPage() {
-        this.bannerList = await util.ajax({url:'goods/queryPageByTagId',para:{"id": 1,"pageNum": 1,"pageSize": 5}})
-        .then((res)=>{
-            wx.hideLoading();
-        }).catch((error)=>{
-            wx.hideLoading();
-        });
-        
+        this.bannerList = await util.ajax({url:'bannerList'});
+        this.recommendList = await getRecommendList();
+        wx.hideLoading();
         this.$apply();
+    }
+
+    getRecommendList(){
+
+        util.ajax({url:'suggestedGoodsList',para:{"pageNum": '${currentPage}',"pageSize": 0}}).then((res)=>{
+            wx.hideLoading();
+            this.recommendList.concat(res);
+        }).catch((err)=>{
+             wx.hideLoading();
+        });
+        this.$apply();
+    }
+
+    onReachBottom() {
+        this.currentPage += 1;
+        console.log(`当前为第${this.currentPage}页`);
+        wx.showLoading({
+            title: '加载中'
+        });
+        getRecommendList();
     }
 
 }
