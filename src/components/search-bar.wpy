@@ -28,13 +28,11 @@
 </style>
 
 <template>
-  <view>
-      <navigator class="search-toolbar" url="{{searchCtx.linkUrl}}">
-        <view class="search-item">
+  <view class="search-toolbar" >
+        <view class="search-item" @tap="onClick()">
             <image class="search-img" src="../../image/common/search.png"></image>
             <view class="search-text">{{searchCtx.text}}</view>
         </view>
-      </navigator>
   </view>
 </template>
 
@@ -51,6 +49,10 @@ export default class SearchBar extends wepy.component {
 
     data = {};
 
-    methods = {};
+    methods = {
+         onClick() {
+            this.$emit('onSearch');
+        }
+    };
 }
 </script>

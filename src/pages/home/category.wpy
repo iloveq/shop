@@ -4,7 +4,7 @@
 
 <template>
   <view>
-    <searchBar :searchCtx.sync="searchCtx"></searchBar>
+    <searchBar :searchCtx.sync="searchCtx" @onSearch.user="search"></searchBar>
     <text>sss</text>
   </view>
  
@@ -30,6 +30,12 @@ export default class CategoryPage extends wepy.page {
     data = {
         searchCtx:{"text":"搜索商品"}
     };
+
+    methods = {
+        search(){
+            wepy.navigateTo({url: '/pages/search/search'});
+        }
+    }
 
 
 }

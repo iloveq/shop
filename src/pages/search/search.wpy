@@ -1,0 +1,19 @@
+<style>
+</style>
+
+<template>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class SearchDetail extends wepy.page {
+     config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '搜索商品',
+        navigationBarTextStyle: 'white'
+    };
+
+}
+</script>

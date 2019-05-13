@@ -1,45 +1,41 @@
 <style lang="less">
 .item-container{
-    width: 100%;
-    .item{
-        background: #fff;
-        padding: 34rpx 28rpx;
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1rpx solid #dbdbdb;
+    .item_content{
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        border-bottom: 1rpx solid #dbdbdb;
-        .item_content{
-            display: flex;
-            align-items: center;
-            .item_img{
-                width: 42rpx;
-                height: 42rpx;
-            }
-            .item_text{
-                font-size: 12px;
-                margin-left: 20rpx;
-                color: #1a1a1a;
-            }
+        .item_img{
+            width: 42rpx;
+            height: 42rpx;
         }
-        .arrow{
-            width: 48rpx;
-            height: 48rpx;
-            background-size: auto;
-            background-repeat: no-repeat;
+        .item_text{
+            font-size: 12px;
+            margin-left: 20rpx;
+            color: #1a1a1a;
         }
     }
+    .arrow{
+        width: 48rpx;
+        height: 48rpx;
+        background-size: auto;
+        background-repeat: no-repeat;
+    }
 }
+
 </style>
 
 <template>
     <view class="item-container">
-        <navigator class="item" url="{{item.link}}">
         <view class="item_content">
           <image class="item_img" src="{{item.icon}}"></image>
           <view class="item_text">{{item.text}}</view>
         </view>
         <image class="arrow" src="../image/common/right_arrow.png"></image>
-      </navigator>
     </view>
 </template>
 
