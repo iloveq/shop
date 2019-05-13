@@ -58,7 +58,7 @@
                 <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
                     class="qlist-cover {{ index % 2 == 0 ? 'qlist-line' : ''}}  {{ index == 2 || index == 3 ? 'qlist-line2' : ''}}"  
                     @tap="jumpDetail({{item.url}})">
-                    <image src="{{item.imageList[0].url}}" />
+                    <image src="{{item.imageUrlList[0]}}" />
                     <text class="qlist-cover-title">{{item.name}}</text>
                     <text class="qlist-cover-desc">${{item.price}}</text>
                 </view>

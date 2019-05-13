@@ -24,9 +24,9 @@
         <userinfo :header.sync="header"></userinfo>
         <orderEntry/>
         <view class="line"/>
-        <orderItem :item.sync="orderItem"></orderItem>
+        <!-- <orderItem :item.sync="orderItem"></orderItem>
         <couponItem :item.sync="couponItem"></couponItem>
-        <favoriteItem :item.sync="favoriteItem"></favoriteItem>
+        <favoriteItem :item.sync="favoriteItem"></favoriteItem> -->
         <addressItem :item.sync="addressItem"></addressItem>
         <phoneItem :item.sync="phoneItem"></phoneItem>
         <serviceItem :item.sync="serviceItem"></serviceItem>
@@ -53,12 +53,12 @@ export default class CategoryPage extends wepy.page {
 
     data = {
         header:{},
-        orderItem:{"text":"我的订单"},
-        couponItem:{"text":"我的优惠卷","icon":"../../image/common/coupon.png"},
-        favoriteItem:{"text":"我的收藏","icon":"../../image/common/likes.png"},
+        //orderItem:{"text":"我的订单"},
+        //couponItem:{"text":"我的优惠卷","icon":"../../image/common/coupon.png"},
+        //favoriteItem:{"text":"我的收藏","icon":"../../image/common/likes.png"},
         addressItem:{"text":"我的收获地址","icon":"../../image/common/address.png"},
         phoneItem:{"text":"客服电话","icon":"../../image/common/phone.png"},
-        serviceItem:{"text":"在线客服","icon":"../../image/common/online.png"}
+        serviceItem:{"text":"做一样的小程序","icon":"../../image/common/online.png"}
     };
 
     components = {

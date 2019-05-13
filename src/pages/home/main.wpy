@@ -39,24 +39,36 @@ export default class MainPage extends wepy.page {
     methods = {};
 
     onReady(){
-        wx.showLoading({
-            title: '加载中'
-        });
         this.loadingMainPage()
     }
 
     async loadingMainPage() {
-        this.bannerList = await util.ajax({url:'miaozu/bannerList'});
-        this.recommendList = this.getRecommendList();
-        wx.hideLoading();
-        this.$apply();
+        wx.showLoading({
+            title: '加载中'
+        });
+        var that = this;
+        await util.ajax({url:'miaozu/bannerList'}).then((res)=>{
+            wx.hideLoading();
+            that.bannerList = res;
+            that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+        that.getRecommendList();
+        
     }
 
     async getRecommendList(){
         var str = `{"pageNum":${this.currentPage},"pageSize": 6}`;
-        this.recommendList = this.recommendList.concat(await util.ajax({url:'miaozu/suggestedGoodsList',para:JSON.parse(str)}));
-        wx.hideLoading();
-        this.$apply();
+        var that = this;
+        await util.ajax({url:'miaozu/suggestedGoodsList',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            that.recommendList = that.recommendList.concat(res);
+            that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+        
     }
 
     onReachBottom() {
