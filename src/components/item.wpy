@@ -45,8 +45,7 @@
 
 <script>
 import wepy from 'wepy';
-
-export default class OrderEntry extends wepy.component {
+export default class Item extends wepy.component {
     props = {
         item: {
             type: Object,

@@ -1,19 +1,36 @@
 <style lang="less">
+
 </style>
 
 <template>
+  <view>
+    <searchBar :searchCtx.sync="searchCtx"></searchBar>
+    <text>sss</text>
+  </view>
+ 
 
 </template>
 
 <script>
 import wepy from 'wepy';
+import SearchBar from '@/components/search-bar';
 export default class CategoryPage extends wepy.page {
+
     config = {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
         navigationBarTitleText: '分类精选',
         navigationBarTextStyle: 'white'
     };
+
+    components = {
+        searchBar:SearchBar,
+    };
+
+    data = {
+        searchCtx:{"text":"搜索商品"}
+    };
+
 
 }
 </script>

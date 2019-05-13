@@ -1,0 +1,56 @@
+<style lang="less">
+.search-toolbar {
+    border: 1px solid #eee;
+    border-radius: 16px;
+    margin: 8px 20px 5px 20px;
+    padding: 0px 5px;
+    height: 35px;
+    position: relative;
+    .search-item{
+        margin: 4px 25px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+
+        .search-img{
+            width:28px;
+            height:28px;
+            background-size: auto;
+            background-repeat: no-repeat;
+        }
+        .search-text {
+            font-size: 15px;
+            color: #999;
+        }
+    } 
+}
+</style>
+
+<template>
+  <view>
+      <navigator class="search-toolbar" url="{{searchCtx.linkUrl}}">
+        <view class="search-item">
+            <image class="search-img" src="../../image/common/search.png"></image>
+            <view class="search-text">{{searchCtx.text}}</view>
+        </view>
+      </navigator>
+  </view>
+</template>
+
+
+<script>
+import wepy from 'wepy';
+export default class SearchBar extends wepy.component {
+    props = {
+        searchCtx: {
+            type: Object,
+            default: {}
+        }
+    };
+
+    data = {};
+
+    methods = {};
+}
+</script>
