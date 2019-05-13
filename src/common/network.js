@@ -1,5 +1,5 @@
 const API = {
-   host: 'http://172.30.14.202:8030/shop/miaozu'
+   host: 'http://172.30.14.202:8030/shop'
 }
 
 const ajax = ({url = '',type = 'POST',para = {},isUseOrigin = true } = {}) => {

@@ -3,10 +3,20 @@
 
 <template>
 
+    <view>
+        <image class="shop-img" src="{{imgUrl}}"/>
+        <text class="shop-name">{{shopInfo.name}}</text>
+        <text class="shop-address">{{shopInfo.address}}</text>
+        <text class="shop-phone">{{shopInfo.phone}}</text>
+        <text class="shop-des">{{shopInfo.description}}</text>
+    </view>
+
 </template>
 
 <script>
 import wepy from 'wepy';
+import util from '@/common/network'
+
 export default class ShopInfoPage extends wepy.page {
     
     config = {
@@ -15,6 +25,29 @@ export default class ShopInfoPage extends wepy.page {
         navigationBarTitleText: '店铺介绍',
         navigationBarTextStyle: 'white'
     };
+
+    data = {
+        imgUrl:"",
+        shopInfo:{}
+    }
+
+    onReady(){
+        wx.showLoading({
+            title: '加载中'
+        });
+        var that = this;
+        util.ajax({url:'shop/queryAll'}).then((res)=>{
+            wx.hideLoading();
+            console.log(res[0]);
+            that.shopInfo = res[0];
+            that.imgUrl = res[0].imageUrlList[0];
+            that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
+        })
+
+    }
+
 
 }
 </script>

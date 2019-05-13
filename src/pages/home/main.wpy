@@ -46,7 +46,7 @@ export default class MainPage extends wepy.page {
     }
 
     async loadingMainPage() {
-        this.bannerList = await util.ajax({url:'bannerList'});
+        this.bannerList = await util.ajax({url:'miaozu/bannerList'});
         this.recommendList = this.getRecommendList();
         wx.hideLoading();
         this.$apply();
@@ -54,7 +54,7 @@ export default class MainPage extends wepy.page {
 
     async getRecommendList(){
         var str = `{"pageNum":${this.currentPage},"pageSize": 6}`;
-        this.recommendList = this.recommendList.concat(await util.ajax({url:'suggestedGoodsList',para:JSON.parse(str)}));
+        this.recommendList = this.recommendList.concat(await util.ajax({url:'miaozu/suggestedGoodsList',para:JSON.parse(str)}));
         wx.hideLoading();
         this.$apply();
     }
