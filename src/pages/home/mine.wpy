@@ -1,19 +1,81 @@
 <style lang="less">
+.page {
+    background-color: white;
+    height: 100%;
+}
+
+.container {
+    background-color: white;
+    height: 100%;
+}
+
+.line {
+    margin-left: 20rpx;
+    margin-right:20rpx;
+    border-bottom: 1rpx solid #dbdbdb;
+}
+
 </style>
 
 <template>
+
+    <view class="container">
+
+        <userinfo :header.sync="header"></userinfo>
+        <orderEntry/>
+        <view class="line"/>
+        <orderItem :item.sync="orderItem"></orderItem>
+        <couponItem :item.sync="couponItem"></couponItem>
+        <favoriteItem :item.sync="favoriteItem"></favoriteItem>
+        <addressItem :item.sync="addressItem"></addressItem>
+        <phoneItem :item.sync="phoneItem"></phoneItem>
+        <serviceItem :item.sync="serviceItem"></serviceItem>
+
+    </view>
+
 
 </template>
 
 <script>
 import wepy from 'wepy';
+import UserInfo from '@/components/userinfo';
+import OrderEntry from '@/components/order-entry';
+import Item from '@/components/item';
+import {header} from '@/common/mock'
+
 export default class CategoryPage extends wepy.page {
     config = {
-         backgroundTextStyle: 'light',
+        backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
-        navigationBarTitleText: 'Mine',
+        navigationBarTitleText: '个人中心',
         navigationBarTextStyle: 'white'
     };
+
+    data = {
+        header:{},
+        orderItem:{"text":"我的订单"},
+        couponItem:{"text":"我的优惠卷","icon":"../../image/common/coupon.png"},
+        favoriteItem:{"text":"我的收藏","icon":"../../image/common/likes.png"},
+        addressItem:{"text":"我的收获地址","icon":"../../image/common/address.png"},
+        phoneItem:{"text":"客服电话","icon":"../../image/common/phone.png"},
+        serviceItem:{"text":"在线客服","icon":"../../image/common/online.png"}
+    };
+
+    components = {
+        userinfo: UserInfo,
+        orderEntry:OrderEntry,
+        orderItem:Item,
+        couponItem:Item,
+        favoriteItem:Item,
+        addressItem:Item,
+        phoneItem:Item,
+        serviceItem:Item,
+    };
+
+    onLoad() {
+        this.header=header;
+        //this.$apply();   
+    }
 
 }
 </script>

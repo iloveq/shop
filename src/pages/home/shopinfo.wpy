@@ -7,11 +7,12 @@
 
 <script>
 import wepy from 'wepy';
-export default class CategoryPage extends wepy.page {
+export default class ShopInfoPage extends wepy.page {
+    
     config = {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
-        navigationBarTitleText: '购物车',
+        navigationBarTitleText: '店铺介绍',
         navigationBarTextStyle: 'white'
     };
 

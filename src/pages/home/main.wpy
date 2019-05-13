@@ -21,7 +21,7 @@ export default class MainPage extends wepy.page {
     config = {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
-        navigationBarTitleText: 'Main',
+        navigationBarTitleText: '首页',
         navigationBarTextStyle: 'white'
     };
 

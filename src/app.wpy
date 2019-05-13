@@ -10,8 +10,10 @@ export default class extends wepy.app {
     pages:[
       'pages/home/main',
       'pages/home/category',
+      'pages/home/shopinfo',
       'pages/home/shopcar',
       'pages/home/mine',
+      'pages/web/webview',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -36,6 +38,12 @@ export default class extends wepy.app {
                     selectedIconPath: 'image/home/category_sel.png',
                     iconPath: 'image/home/category_nor.png',
                     text:'分类'
+                },
+                {
+                    pagePath: 'pages/home/shopinfo',
+                    selectedIconPath: 'image/home/shop_sel.png',
+                    iconPath: 'image/home/shop_nor.png',
+                    text:'店铺'
                 },
                 {
                     pagePath: 'pages/home/shopcar',

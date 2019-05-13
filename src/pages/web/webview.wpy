@@ -1,0 +1,29 @@
+<style>
+</style>
+
+<template>
+    <web-view src="{{url}}"></web-view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Webview extends wepy.page {
+     config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '',
+        navigationBarTextStyle: 'white'
+    };
+
+    onLoad(options) {
+        var that = this;
+        that.setData({
+            url: options.link
+        });
+        wx.setNavigationBarTitle({
+            title: options.title
+        });
+    }
+}
+</script>
