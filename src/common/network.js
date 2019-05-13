@@ -18,7 +18,7 @@ const ajax = ({url = '',type = 'POST',para = {},isUseOrigin = true } = {}) => {
             data: para,
             success(res) {
                 let content = res.data.data;
-                console.log(content)
+                //console.log(content)
                 if(res.data.code==200){
                     resolve(content);
                 }else{

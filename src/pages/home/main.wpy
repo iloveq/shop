@@ -15,7 +15,8 @@
 import wepy from 'wepy';
 import Banner from '@/components/banner';
 import Recommend from '@/components/recommend';
-import util from '@/common/network'
+import util from '@/common/network';
+import toast from '@/common/utils';
 
 export default class MainPage extends wepy.page {
     config = {
@@ -29,6 +30,7 @@ export default class MainPage extends wepy.page {
         bannerList: [],
         recommendList: [],
         currentPage: 1,
+        hasMore:true
     };
 
     components = {
@@ -63,6 +65,9 @@ export default class MainPage extends wepy.page {
         var that = this;
         await util.ajax({url:'miaozu/suggestedGoodsList',para:JSON.parse(str)}).then((res)=>{
             wx.hideLoading();
+            that.hasMore = res.length==0;
+            console.log(`当前为第${this.currentPage}页`);
+            console.log(that.hasMore)
             that.recommendList = that.recommendList.concat(res);
             that.$apply();
         }).catch((err)=>{
@@ -72,8 +77,8 @@ export default class MainPage extends wepy.page {
     }
 
     onReachBottom() {
+        if(!hasMore)return;
         this.currentPage++;
-        console.log(`当前为第${this.currentPage}页`);
         wx.showLoading({
             title: '加载中'
         });
@@ -81,4 +86,7 @@ export default class MainPage extends wepy.page {
     }
 
 }
+
+//mysql> set password for root@localhost = password('root'); 
+// mysql> create database shop;
 </script>
