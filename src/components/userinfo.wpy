@@ -44,7 +44,7 @@
 <script>
 import wepy from 'wepy';
 
-export default class Ad extends wepy.component {
+export default class UserInfo extends wepy.component {
     props = {
         header: {
             type: Object,
