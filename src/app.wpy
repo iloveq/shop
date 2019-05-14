@@ -15,6 +15,7 @@ export default class extends wepy.app {
       'pages/home/mine',
       'pages/web/webview',
       'pages/search/search',
+      'pages/goods/goodsdtl',
     ],
     window: {
       backgroundTextStyle: 'light',

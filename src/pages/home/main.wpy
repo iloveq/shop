@@ -61,12 +61,11 @@ export default class MainPage extends wepy.page {
     }
 
     async getRecommendList(){
-        var str = `{"pageNum":${this.currentPage},"pageSize": 6}`;
         var that = this;
+        var str = `{"pageNum":${that.currentPage},"pageSize": 6}`;
         await util.ajax({url:'miaozu/suggestedGoodsList',para:JSON.parse(str)}).then((res)=>{
             wx.hideLoading();
-            that.hasMore = res.length==0;
-            console.log(`当前为第${this.currentPage}页`);
+            that.hasMore = res.length!=0&&res.length==6;
             console.log(that.hasMore)
             that.recommendList = that.recommendList.concat(res);
             that.$apply();
@@ -77,7 +76,9 @@ export default class MainPage extends wepy.page {
     }
 
     onReachBottom() {
-        if(!hasMore)return;
+        if(!this.hasMore){
+            return;
+        }
         this.currentPage++;
         wx.showLoading({
             title: '加载中'

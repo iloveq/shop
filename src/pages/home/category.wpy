@@ -38,20 +38,19 @@
       margin: 20rpx 0rpx;
     }
     .children-item {
-      height: 200rpx;
-      width: 170rpx;
+      width: 50%;
       text-align: center;
         .child-image {
-            width: 60px;
-            height: 60px;
+            width: 90%;
+            height: 115px;
         }
         .child-name {
-            font-size: 26rpx;
+            font-size: 24rpx;
             color: #666;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            width: 170rpx;
+            width: 100%;
         }
     }
   }
@@ -134,13 +133,18 @@ export default class CategoryPage extends wepy.page {
     }
 
     async getGoodsList(id){
-        var categoryId = id;
-        var str = `{"id":${categoryId},"pageNum":${this.currentPage},"pageSize": 6}`;
+        wx.showLoading({
+            title: '加载中'
+        });
         var that = this;
+        var categoryId = id;
+        var str = `{"id":${categoryId},"pageNum":${that.currentPage},"pageSize": 6}`;
         await util.ajax({url:'goods/queryPageByCategoryId',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
             that.goodsList = res;
             that.$apply();
         }).catch((err)=>{
+            wx.hideLoading();
         });
         
     }
@@ -151,11 +155,7 @@ export default class CategoryPage extends wepy.page {
             console.log(id);
             this.currentPage=1;
             for (var i = 0; i < this.categoryList.length; i++) {
-                if(this.categoryList[i].id==id){
-                    this.categoryList[i].active=true;
-                }else{
-                    this.categoryList[i].active=false;
-                }
+                this.categoryList[i].active=this.categoryList[i].id==id;  
             }
             this.$apply();
             this.getGoodsList(id);

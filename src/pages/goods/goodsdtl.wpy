@@ -1,0 +1,31 @@
+<style>
+</style>
+
+<template>
+  
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class GoodsDetailPage extends wepy.page {
+     config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '',
+        navigationBarTextStyle: 'white'
+    };
+
+    data ={
+        goodId:""
+    }
+
+    onLoad(options) {
+        var that = this;
+        that.goodId = options.goodId
+        wx.setNavigationBarTitle({
+            title: options.name
+        });
+    }
+}
+</script>

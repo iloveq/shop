@@ -7,19 +7,20 @@
     height: 35px;
     position: relative;
     .search-item{
-        margin: 4px 25px;
+        margin: 7px 25px;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
 
         .search-img{
-            width:28px;
-            height:28px;
+            width:15px;
+            height:15px;
             background-size: auto;
             background-repeat: no-repeat;
         }
         .search-text {
+            margin-left: 8rpx;
             font-size: 15px;
             color: #999;
         }
@@ -30,7 +31,7 @@
 <template>
   <view class="search-toolbar" >
         <view class="search-item" @tap="onClick()">
-            <image class="search-img" src="../../image/common/search.png"></image>
+            <image class="search-img" src="../image/common/search.png"></image>
             <view class="search-text">{{searchCtx.text}}</view>
         </view>
   </view>
