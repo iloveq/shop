@@ -1,11 +1,81 @@
 <style lang="less">
-
+.category {
+  display: flex;
+  position: relative;
+  .category-left{
+    width: 200rpx;
+    position: relative;
+    z-index: 1;
+    .name {
+      text-align: center;
+      height: 100rpx;
+      line-height: 100rpx;
+      font-size: 28rpx;
+      color: #666;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .active {
+      border-left: 6rpx solid #ff6a3c;
+      background: #fff;
+      color: #ff6a3c;
+    }
+  }
+  .category-right {
+    position: relative;
+    z-index: 999;
+    background: #fff;
+    padding: 15px 10px 10px 30px;
+    .title {
+      font-size: 30rpx;
+      color: #333;
+      margin-left: 25rpx;
+    }
+    .children {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20rpx 0rpx;
+    }
+    .children-item {
+      height: 200rpx;
+      width: 170rpx;
+      text-align: center;
+        .child-image {
+            width: 60px;
+            height: 60px;
+        }
+        .child-name {
+            font-size: 26rpx;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 170rpx;
+        }
+    }
+  }
+}
 </style>
 
 <template>
   <view>
     <searchBar :searchCtx.sync="searchCtx" @onSearch.user="search"></searchBar>
-    <text>sss</text>
+    <view class="category" >
+    <scroll-view class="category-left" scroll-y scroll-with-animation="true" >
+      <view class="name {{item.active? 'active':''}}" wx:for="{{categoryList}}"  wx:for-item="item" wx:for-index="index" wx:key="index" data-id="{{item.id}}" @tap="changeCate">
+        {{item.name}}
+      </view>
+    </scroll-view>
+    <scroll-view class="category-right" scroll-y scroll-with-animation="true">
+        <view class="children">
+          <navigator hover-class="none" class="children-item" wx:for="{{goodsList}}" wx:for-item="item" wx:key="index" url="">
+            <image class="child-image" src="{{item.imageUrlList[0]}}"></image>
+            <view class="child-name">{{item.name}}</view>
+          </navigator>
+        </view>
+    </scroll-view>
+  </view>
   </view>
  
 
@@ -14,6 +84,7 @@
 <script>
 import wepy from 'wepy';
 import SearchBar from '@/components/search-bar';
+import util from '@/common/network';
 export default class CategoryPage extends wepy.page {
 
     config = {
@@ -28,13 +99,67 @@ export default class CategoryPage extends wepy.page {
     };
 
     data = {
-        searchCtx:{"text":"搜索商品"}
+        searchCtx:{"text":"搜索商品"},
+        categoryList: {},
+        goodsList: {},
+        currentPage:1
     };
 
     methods = {
         search(){
             wepy.navigateTo({url: '/pages/search/search'});
         }
+    }
+
+    onLoad(){
+        this.getCategoryList();
+    }
+
+    async getCategoryList() {
+        wx.showLoading({
+            title: '加载中'
+        });
+        var that = this;
+        await util.ajax({url:'category/queryAll'}).then((res)=>{
+            wx.hideLoading();
+            for(var i=0;i<res.length-1;i++){
+                res[i].active = i==0;
+            }
+            that.categoryList = res;
+            that.$apply();
+            that.getGoodsList(that.categoryList[0].id);
+        }).catch((err)=>{
+            wx.hideLoading();
+        });   
+    }
+
+    async getGoodsList(id){
+        var categoryId = id;
+        var str = `{"id":${categoryId},"pageNum":${this.currentPage},"pageSize": 6}`;
+        var that = this;
+        await util.ajax({url:'goods/queryPageByCategoryId',para:JSON.parse(str)}).then((res)=>{
+            that.goodsList = res;
+            that.$apply();
+        }).catch((err)=>{
+        });
+        
+    }
+
+    methods={
+        changeCate(event) {
+            let id = event.currentTarget.dataset.id;
+            console.log(id);
+            this.currentPage=1;
+            for (var i = 0; i < this.categoryList.length; i++) {
+                if(this.categoryList[i].id==id){
+                    this.categoryList[i].active=true;
+                }else{
+                    this.categoryList[i].active=false;
+                }
+            }
+            this.$apply();
+            this.getGoodsList(id);
+        },
     }
 
 
