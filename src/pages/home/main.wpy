@@ -4,7 +4,7 @@
 <template>
     <view class="container">
         <view>
-            <banner :bannerList.sync="bannerList"></banner>
+            <banner :bannerList.sync="bannerList" :bannerHeight.sync="bannerHeight"></banner>
             <recommend :recommendList.sync="recommendList"></recommend>
         </view>
     </view>
@@ -28,6 +28,7 @@ export default class MainPage extends wepy.page {
 
     data = {
         bannerList: [],
+        bannerHeight:"",
         recommendList: [],
         currentPage: 1,
         hasMore:true
@@ -52,6 +53,7 @@ export default class MainPage extends wepy.page {
         await util.ajax({url:'miaozu/bannerList'}).then((res)=>{
             wx.hideLoading();
             that.bannerList = res;
+            that.bannerHeight = 'height: 128px;';
             that.$apply();
         }).catch((err)=>{
             wx.hideLoading();

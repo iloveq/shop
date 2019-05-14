@@ -57,7 +57,7 @@
              <view class="qlist">
                 <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
                     class="qlist-cover {{ index % 2 == 0 ? 'qlist-line' : ''}}  {{ index == 2 || index == 3 ? 'qlist-line2' : ''}}"  
-                    @tap="jumpDetail({{item.url}})">
+                    @tap="jumpDetail({{item.id}},{{item.name}})">
                     <image src="{{item.imageUrlList[0]}}" />
                     <text class="qlist-cover-title">{{item.name}}</text>
                     <text class="qlist-cover-desc">${{item.price}}</text>
@@ -83,7 +83,11 @@ export default class Recommend extends wepy.component {
     };
     
     methods = {
-
+        jumpDetail(id,title) {
+            wepy.navigateTo({
+                url: `/pages/goods/goodsdtl?goodId=${id}`
+            });
+        }
     };
 }
 </script>

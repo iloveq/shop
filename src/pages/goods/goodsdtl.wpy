@@ -1,31 +1,83 @@
 <style>
+.goods-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center
+   
+}
 </style>
 
 <template>
+
+    <view>
+        <banner :bannerList.sync="goodsImgList" :bannerHeight.sync="bannerHeight"></banner>
+        <text class="goods-info">
+            <text class="goods-name">{{goodsName}} </text>
+            <text>价格${{goodsPrice}}</text>
+        </text>
+           
+
+    </view>
   
 </template>
 
 <script>
 import wepy from 'wepy';
+import Banner from '@/components/banner';
+import util from '@/common/network';
+import toast from '@/common/utils';
 
 export default class GoodsDetailPage extends wepy.page {
      config = {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
-        navigationBarTitleText: '',
+        navigationBarTitleText: '商品详情',
         navigationBarTextStyle: 'white'
     };
 
     data ={
-        goodId:""
+        goodId:"",
+        goodsImgList:[],
+        bannerHeight:"",
+        goodsName:"",
+        goodsPrice:""
+        
     }
 
+    components = {
+        banner:Banner,
+    };
+
     onLoad(options) {
+        this.goodId = options.goodId
+    }
+
+    onReady(){
+        this.getGoodsDtl();
+    }
+
+    async getGoodsDtl() {
+        wx.showLoading({
+            title: '加载中'
+        });
         var that = this;
-        that.goodId = options.goodId
-        wx.setNavigationBarTitle({
-            title: options.name
+        var str = `{"id":${that.goodId}}`;
+        await util.ajax({url:'goods/queryById',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            that.goodsName = res.name;
+            that.goodsPrice = res.price;
+            for(let i=0;i<res.imageUrlList.length;i++){
+                var obj = {"url":res.imageUrlList[i]};
+                that.goodsImgList[i]=obj;  
+            }
+            that.bannerHeight = 'height: 200px;';
+            that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
         });
     }
+
+
 }
 </script>
