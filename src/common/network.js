@@ -1,5 +1,5 @@
 const API = {
-   host: 'http://127.0.0.1:8030/shop'
+   host: 'http://47.105.210.223:8030/shop'
 }
 
 const ajax = ({url = '',type = 'POST',para = {},isUseOrigin = true } = {}) => {

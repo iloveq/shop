@@ -1,0 +1,112 @@
+<style lang="less">
+.detail-bottom {
+  width: 100%;
+  border-top: 1px solid #ededed;
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  z-index: 1001;
+  .bottom-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    .contact {
+      width: 100rpx;
+      height: 80rpx;
+      margin: 0 auto;
+      position: absolute;
+      text-align: center;
+      line-height: 80rpx;
+      left: 100rpx; 
+      opacity: 0;
+    }
+  }
+  .sy-bottom {
+    padding: 15rpx 40rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    font-size: 30rpx;
+  }
+  .btn-order {
+    background: #ff4856;
+    color: #fff;
+  }
+  .btn-cart {
+    color: #fff;
+    background: #ff6e30;
+  }
+  .order-color {
+    background: #A9A9A9;
+    color: #fff;
+  }
+  .cart-color {
+    color: #fff;
+    background: #A9A9A9;
+  }
+  .item:first-child {
+    border-right: 1px solid #efefef;
+  }
+  .item {
+    flex: 1;
+    text-align: center;
+    image{
+        width:15px;
+        height:15px;
+        background-size: auto;
+        background-repeat: no-repeat;
+    }
+    .doc {
+      font-size: 24rpx;
+    }
+  }
+}
+</style>
+
+<template>
+
+    <view class="detail-bottom">
+      <view class="bottom-box">
+        <view class="item" @tap="homePage">
+          <image src="../image/home/main_nor.png"></image>
+          <view class="doc">首页</view>
+        </view>
+        <contact-button class="contact">
+        </contact-button>
+        <view class="item">
+          <image src="../image/common/online.png"></image>
+          <view class="doc">客服</view>
+        </view>
+        <contact-button class="contact">
+        </contact-button>
+        <view class="item" @tap="takeFavorite">
+          <image src="{{isFavorite?'../../image/common/like.png':'../../image/common/unlike.png'}}"></image>
+          <view class="doc">收藏</view>
+        </view>
+        <view class="sy-bottom {{canOrder?'btn-cart':'cart-color'}}" @tap="takeCart">加入购物车</view>
+        <view class="sy-bottom {{canOrder?'btn-order':'order-color'}}" @tap="takeOrder">立即购买</view>
+      </view>
+    </view>
+    
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class DtlBottom extends wepy.component{
+
+    props = {
+    };
+
+    data = {
+        canOrder:true,
+        isFavorite:false
+    };
+
+    methods = {
+        takeFavorite(){
+            this.isFavorite = !this.isFavorite;
+        }
+    };
+    
+}
+</script>

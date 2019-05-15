@@ -1,22 +1,51 @@
-<style>
+<style lang="less">
 .goods-info{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center
-   
 }
+.goods-name{
+    width: 100%;
+    font-style: bold;
+    font-size: 18px;
+    margin:8px;
+}
+.goods-price{
+    width: 100%;
+    font-size: 15px;
+    margin-left:8px;
+
+}
+
+.goods-cate{
+    width: 100%;
+    font-size: 15px;
+    margin-top: 6px;
+    margin-left:8px;
+
+}
+
+.goods-desc{
+    width: 100%;
+    margin-top: 6px;
+    font-size: 15px;
+    margin-left:8px;
+
+}
+
 </style>
 
 <template>
 
     <view>
         <banner :bannerList.sync="goodsImgList" :bannerHeight.sync="bannerHeight"></banner>
-        <text class="goods-info">
+        <view class="goods-info">
             <text class="goods-name">{{goodsName}} </text>
-            <text>价格${{goodsPrice}}</text>
-        </text>
-           
+            <text class="goods-price">价格${{goodsPrice}}</text>
+            <text class="goods-cate">类别：{{goodsCategory}}</text>
+            <text class="goods-desc">详细信息：{{goodsDesc}}</text>
+        </view>
+        <dtlBottom/>  
 
     </view>
   
@@ -25,6 +54,7 @@
 <script>
 import wepy from 'wepy';
 import Banner from '@/components/banner';
+import DtlBottom from '@/components/dtl-bottom';
 import util from '@/common/network';
 import toast from '@/common/utils';
 
@@ -41,12 +71,15 @@ export default class GoodsDetailPage extends wepy.page {
         goodsImgList:[],
         bannerHeight:"",
         goodsName:"",
-        goodsPrice:""
+        goodsPrice:"",
+        goodsCategory:"",
+        goodsDesc:""
         
     }
 
     components = {
         banner:Banner,
+        dtlBottom:DtlBottom,
     };
 
     onLoad(options) {
@@ -67,6 +100,8 @@ export default class GoodsDetailPage extends wepy.page {
             wx.hideLoading();
             that.goodsName = res.name;
             that.goodsPrice = res.price;
+            that.goodsCategory = res.categoryName;
+            that.goodsDesc = res.desciption;
             for(let i=0;i<res.imageUrlList.length;i++){
                 var obj = {"url":res.imageUrlList[i]};
                 that.goodsImgList[i]=obj;  
