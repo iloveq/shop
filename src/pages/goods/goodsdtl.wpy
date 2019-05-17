@@ -82,6 +82,15 @@ export default class GoodsDetailPage extends wepy.page {
         dtlBottom:DtlBottom,
     };
 
+    methods = {
+        takeCart(){
+
+        },
+        takeOrder(){
+            
+        }
+    }
+
     onLoad(options) {
         this.goodId = options.goodId
     }

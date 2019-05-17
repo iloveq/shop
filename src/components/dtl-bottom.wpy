@@ -105,6 +105,12 @@ export default class DtlBottom extends wepy.component{
     methods = {
         takeFavorite(){
             this.isFavorite = !this.isFavorite;
+        },
+        takeCart(){
+            this.$emit('takeCart');
+        },
+        takeOrder(){
+            this.$emit('takeOrder');
         }
     };
     
