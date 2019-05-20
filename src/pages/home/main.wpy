@@ -90,6 +90,5 @@ export default class MainPage extends wepy.page {
 
 }
 
-//mysql> set password for root@localhost = password('root'); 
-// mysql> create database shop;
+
 </script>

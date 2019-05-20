@@ -1,0 +1,98 @@
+<style lang="less">
+
+.address{
+    margin-top: 10px;
+}
+.order-content{
+    float: left;
+    image{
+        width:120px;
+        height:120px;   
+        background-size: auto;
+        background-repeat: no-repeat;
+    }
+    .content-box{
+        display: block;
+        .goods-item{
+            font-size: 15px;
+            margin-top: 6px;
+            margin-left:8px;
+        }
+    }
+
+}
+
+</style>
+
+
+<template>
+
+   <view class="confirm-order">
+
+        <addressItem class= "address" :item.sync="addressItem"></addressItem>
+        <view class="order-content">
+            <image src ="{{goodsImage}}"></image>
+            <view class="contex-box">
+                <text class="goods-item">{{goodsName}} </text>
+                <text class="goods-item">价格${{goodsPrice}}</text>
+            </view>
+        </view>
+
+   </view>
+   
+</template>
+
+<script>
+import wepy from 'wepy';
+import Item from '@/components/item';
+import util from '@/common/network';
+import toast from '@/common/utils';
+
+export default class OrderConfirm extends wepy.page {
+
+    config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '确认订单',
+        navigationBarTextStyle: 'white'
+    };
+
+    components = {
+         addressItem:Item,
+    }
+
+    data={
+        addressItem:{"text":"您还没有收获地址点击这里创建","icon":"../../image/common/address.png"},
+        goodsId:"",
+        goodsNum:"",
+        goodsName:"",
+        goodsPrice:"",
+        goodsImage:""
+    }
+
+    onLoad(options) {
+        this.goodsId = options.goodId;
+        this.goodsNum = options.goodsNum;
+        this.getGoodsDtl();
+       
+    }
+
+     async getGoodsDtl() {
+        wx.showLoading({
+            title: '加载中'
+        });
+        var that = this;
+        var str = `{"id":${that.goodsId}}`;
+        await util.ajax({url:'goods/queryById',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            that.goodsName = res.name;
+            that.goodsPrice = res.price;
+            that.goodsImage = res.imageUrlList[0];
+            that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+    }
+
+}
+</script>
