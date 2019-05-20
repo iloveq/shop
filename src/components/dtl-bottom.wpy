@@ -83,8 +83,8 @@
           <image src="{{isFavorite?'../../image/common/like.png':'../../image/common/unlike.png'}}"></image>
           <view class="doc">收藏</view>
         </view>
-        <view class="sy-bottom {{canOrder?'btn-cart':'cart-color'}}" @tap="takeCart">加入购物车</view>
-        <view class="sy-bottom {{canOrder?'btn-order':'order-color'}}" @tap="takeOrder">立即购买</view>
+        <view class="sy-bottom {{canOrder?'btn-cart':'cart-color'}}" @tap="clickCart">加入购物车</view>
+        <view class="sy-bottom {{canOrder?'btn-order':'order-color'}}" @tap="clickOrder">立即购买</view>
       </view>
     </view>
     
@@ -103,14 +103,19 @@ export default class DtlBottom extends wepy.component{
     };
 
     methods = {
+          homePage() {
+          wepy.switchTab({
+            url: '/pages/home/main'
+          })
+        },
         takeFavorite(){
             this.isFavorite = !this.isFavorite;
         },
-        takeCart(){
-            this.$emit('takeCart');
+        clickCart(){
+            this.$emit('takeCart',"");
         },
-        takeOrder(){
-            this.$emit('takeOrder');
+        clickOrder(){
+            this.$emit('takeOrder',"");
         }
     };
     

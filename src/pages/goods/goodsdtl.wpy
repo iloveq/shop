@@ -45,7 +45,8 @@
             <text class="goods-cate">类别：{{goodsCategory}}</text>
             <text class="goods-desc">详细信息：{{goodsDesc}}</text>
         </view>
-        <dtlBottom/>  
+        <dtlBottom @takeCart.user="takeCart" @takeOrder.user="takeOrder"/> 
+        <dtlDialog :hidden.sync="hidden" :detial.sync="detial" @confirmOrder.user="confirmOrder"/>
 
     </view>
   
@@ -55,6 +56,7 @@
 import wepy from 'wepy';
 import Banner from '@/components/banner';
 import DtlBottom from '@/components/dtl-bottom';
+import DtlDialog from '@/components/dtl-dialog';
 import util from '@/common/network';
 import toast from '@/common/utils';
 
@@ -73,21 +75,41 @@ export default class GoodsDetailPage extends wepy.page {
         goodsName:"",
         goodsPrice:"",
         goodsCategory:"",
-        goodsDesc:""
+        goodsDesc:"",
+        hidden:true,
+        detial:{},
+        // 0 shopcart 1 justpay -1 unknow
+        currentOrderType:-1
         
     }
 
     components = {
         banner:Banner,
         dtlBottom:DtlBottom,
+        dtlDialog:DtlDialog
     };
 
     methods = {
         takeCart(){
+            this.currentOrderType = 0;
+            this.$invoke('dtlDialog','show',this.detial);
 
         },
         takeOrder(){
-            
+            this.currentOrderType = 1;
+            this.$invoke('dtlDialog','show',this.detial);
+        },
+        confirmOrder(orderNum){
+            if(this.currentOrderType==-1){
+                return;
+            }
+            if(this.currentOrderType==0){
+                // 加入购物车
+                console.log("加入购物车")
+            }else if(this.currentOrderType==1){
+                // 进入订单页
+                console.log("进入订单页"+orderNum)
+            }
         }
     }
 
@@ -116,6 +138,10 @@ export default class GoodsDetailPage extends wepy.page {
                 that.goodsImgList[i]=obj;  
             }
             that.bannerHeight = 'height: 200px;';
+            that.detial.logo = that.goodsImgList[0].url;
+            that.detial.name = that.goodsName;
+            that.detial.price = that.goodsPrice;
+            that.detial.num = 5;
             that.$apply();
         }).catch((err)=>{
             wx.hideLoading();
