@@ -52,7 +52,7 @@ export default class MainPage extends wepy.page {
         var that = this;
         await util.ajax({url:'miaozu/bannerList'}).then((res)=>{
             wx.hideLoading();
-            that.bannerList = res;
+            that.bannerList = res.slice(0,4);
             that.bannerHeight = 'height: 128px;';
             that.$apply();
         }).catch((err)=>{

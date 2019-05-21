@@ -52,7 +52,7 @@
     <view class="recommend">
         <view class="recommend-contain">
             <view class="recommend-title">
-                <text>热门推荐：</text>
+                <text>{{title}}</text>
             </view>
              <view class="qlist">
                 <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
@@ -79,13 +79,13 @@ export default class Recommend extends wepy.component {
     }
 
     data = {
-
+        title:this.props.recommendList.length==0?"":" 热门推荐："
     };
     
     methods = {
         jumpDetail(id,title) {
             wepy.navigateTo({
-                url: `/pages/goods/goodsdtl?goodId=${id}`
+                url: `/pages/goods/detail?goodId=${id}`
             });
         }
     };

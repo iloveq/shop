@@ -15,6 +15,13 @@
     border-bottom: 1rpx solid #dbdbdb;
 }
 
+.btn {
+  padding-left: 0;
+  padding-right: 0;
+  line-height:0;
+  display:inline;
+}
+
 </style>
 
 <template>
@@ -27,9 +34,13 @@
         <!-- <orderItem :item.sync="orderItem"></orderItem>
         <couponItem :item.sync="couponItem"></couponItem>
         <favoriteItem :item.sync="favoriteItem"></favoriteItem> -->
-        <addressItem :item.sync="addressItem"></addressItem>
-        <phoneItem :item.sync="phoneItem"></phoneItem>
-        <serviceItem :item.sync="serviceItem"></serviceItem>
+
+        <addressItem :item.sync="addressItem" @onItemClick.user="onClickAddress"/>
+        <button class="btn" open-type="contact">
+            <phoneItem :item.sync="phoneItem"/>
+        </button>
+        <serviceItem :item.sync="serviceItem" @onItemClick.user="onClickService"/>
+        
 
     </view>
 
@@ -57,7 +68,7 @@ export default class CategoryPage extends wepy.page {
         //couponItem:{"text":"我的优惠卷","icon":"../../image/common/coupon.png"},
         //favoriteItem:{"text":"我的收藏","icon":"../../image/common/likes.png"},
         addressItem:{"text":"我的收获地址","icon":"../../image/common/address.png"},
-        phoneItem:{"text":"客服电话","icon":"../../image/common/phone.png"},
+        phoneItem:{"text":"联系客服","icon":"../../image/common/phone.png"},
         serviceItem:{"text":"做一样的小程序","icon":"../../image/common/online.png"}
     };
 
@@ -71,6 +82,19 @@ export default class CategoryPage extends wepy.page {
         phoneItem:Item,
         serviceItem:Item,
     };
+
+    methods={
+        onClickAddress(){
+            wepy.navigateTo({
+                url: `/pages/address/selected`
+            });
+        },
+        onClickService(){
+            wepy.navigateTo({
+                url: `/pages/web/webview?link=${"https://github.com/woaigmz/shop"}&title=${"关于我们"}`
+            });
+        }
+    }
 
     onLoad() {
         this.header=header;

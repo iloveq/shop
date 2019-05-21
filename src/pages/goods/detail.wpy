@@ -108,7 +108,7 @@ export default class GoodsDetailPage extends wepy.page {
                 console.log("加入购物车")
             }else if(this.currentOrderType==1){
                 wepy.navigateTo({
-                    url: `/pages/order/orderchk?goodId=${this.goodId}&goodsNum=${goodsNum}`
+                    url: `/pages/order/confirm?goodId=${this.goodId}&goodsNum=${goodsNum}`
                 });
             }
         }

@@ -30,7 +30,7 @@
 </style>
 
 <template>
-    <view class="item-container">
+    <view class="item-container" @tap="clickItem">
         <view class="item_content">
           <image class="item_img" src="{{item.icon}}"></image>
           <view class="item_text">{{item.text}}</view>
@@ -54,7 +54,9 @@ export default class Item extends wepy.component {
     };
 
     methods = {
-        
+        clickItem(){
+            this.$emit("onItemClick");
+        }
     };
 }
 </script>
