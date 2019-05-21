@@ -1,0 +1,1 @@
+exports.OPEN_ID = 'open-id';
