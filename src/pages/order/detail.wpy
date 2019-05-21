@@ -1,0 +1,24 @@
+<style>
+</style>
+
+<template>
+  
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Address extends wepy.page {
+
+    config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '订单详情',
+        navigationBarTextStyle: 'white'
+    };
+
+    onLoad(options) {
+     
+    }
+}
+</script>

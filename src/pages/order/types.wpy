@@ -1,0 +1,40 @@
+<style>
+</style>
+
+<template>
+    <tab @currentTab.user="getCurrentTab" :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
+
+  
+</template>
+
+<script>
+import wepy from 'wepy';
+import Tab from '@/components/tab'
+import util from '@/common/network';
+import toast from '@/common/utils';
+
+export default class OrderTypes extends wepy.page {
+
+    config = {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#599eff',
+        navigationBarTitleText: '我的订单',
+        navigationBarTextStyle: 'white'
+    };
+
+    components = {
+        tab: Tab,
+    
+    }
+
+    data = {
+        currentTab:0,
+        tabList: ["待付款", "待收货", "已完成", "已取消"],
+
+    }
+
+    onLoad(options) {
+       this.currentTab = options.type;
+    }
+}
+</script>

@@ -30,7 +30,7 @@
 
 <template>
     <view class="order-entry">
-        <view class="item" wx:for="{{list}}" wx:for-item="item" wx:for-index="index" wx:for-item="item" wx:key="index">
+        <view class="item" wx:for="{{list}}" wx:for-item="item" wx:for-index="index" wx:for-item="item" wx:key="index" @tap="clickEntry({{index}})">
             <image src="{{item.icon}}" />
             <text>{{item.des}}</text>
         </view> 
@@ -48,22 +48,18 @@ export default class OrderEntry extends wepy.component {
                         {
                             icon: "../../image/order/order_pay.png",
                             des: "待付款",
-                            link:''
                         },
                         {
                             icon: "../../image/order/order_receiver.png",
                             des: "待收货",
-                            link:''
                         },
                         {
                             icon: "../../image/order/order_finish.png",
                             des: "已完成",
-                            link:''
                         },
                         {
                             icon: "../../image/order/order_cancel.png",
                             des: "已取消",
-                            link:''
                         }
                     ]
         }
@@ -74,6 +70,12 @@ export default class OrderEntry extends wepy.component {
     };
 
     methods = {
+
+        clickEntry(index){
+             wepy.navigateTo({
+                url: `/pages/order/types?type=${index}`
+            });
+        }
         
     };
 }
