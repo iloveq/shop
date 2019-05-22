@@ -103,6 +103,13 @@ export default class GoodsDetailPage extends wepy.page {
             if(this.currentOrderType==-1){
                 return;
             }
+            let token = wepy.getStorageSync('token');
+            if(token==""){
+                wepy.navigateTo({
+                    url: `/pages/authorize/authorize`
+                });
+                return;
+            }
             if(this.currentOrderType==0){
                 // 加入购物车
                 console.log("加入购物车")

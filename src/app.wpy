@@ -21,6 +21,7 @@ export default class extends wepy.app {
       'pages/order/detail',
       'pages/address/selected',
       'pages/address/modify',
+      'pages/authorize/authorize'
     ],
     window: {
       backgroundTextStyle: 'light',

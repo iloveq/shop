@@ -101,5 +101,14 @@ export default class CategoryPage extends wepy.page {
         //this.$apply();   
     }
 
+    onShow(){
+        let userInfo = wepy.getStorageSync('userInfo');
+        console.log(userInfo);
+        if(userInfo!=""){
+            this.header.username = userInfo.nickName;
+            this.header.avatar=userInfo.avatarUrl;
+        }
+    }
+
 }
 </script>

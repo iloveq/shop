@@ -28,8 +28,8 @@
 <template>
     <view class="contain">
         <view class="contain-userinfo">
-            <image src="{{avatarUrl}}" />
-            <text>{{name}}</text>
+            <image src="{{userInfo.avatarUrl}}" />
+            <text>{{userInfo.nickName}}</text>
         </view>
         <view class="contain-authorize">
             <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">获取登录授权</button>
@@ -39,7 +39,8 @@
 
 <script>
 import wepy from 'wepy';
-import utils from '@/common/utils';
+import util from '@/common/network';
+import toast from '@/common/utils';
 
 export default class Authorize extends wepy.page {
     config = {
@@ -49,28 +50,35 @@ export default class Authorize extends wepy.page {
         navigationBarTextStyle: 'white'
     };
     data = {
-        avatarUrl: '',
-        name: ''
+        userInfo:{}
     };
     methods = {
         onGotUserInfo(e) {
             try {
-                const userInfo = e.detail.userInfo;
-                this.$parent.globalData.userInfo = userInfo;
-                wepy.setStorageSync('userInfo', userInfo);
-                this.avatarUrl = userInfo.avatarUrl;
-                this.name = userInfo.nickName;
-                setTimeout(() => {
-                    wepy.switchTab({
-                        url: '/pages/home/main'
-                    });
-                }, 1000);
+                this.userInfo = e.detail.userInfo;
+                wepy.setStorageSync('userInfo', this.userInfo);
+                this.toLogin();
             } catch (e) {
-                utils.toast('请打开授权');
+                toast.toast(e);
             }
-        }
+        } 
     };
-    watch = {};
+
+    async toLogin(){
+        var that = this;
+        var str = `{"avatar":"${that.userInfo.avatarUrl}","username":"${that.userInfo.nickName}" }`;
+        console.log(str)
+        await util.ajax({url:'miaozu/login',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            wepy.setStorageSync('token', res.token);
+            setTimeout(() => {
+                    wepy.navigateBack({delta: 1})
+            }, 1000);
+
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+    }
 }
 </script>
 
