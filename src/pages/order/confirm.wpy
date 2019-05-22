@@ -4,7 +4,7 @@
     margin-top: 10px;
 }
 .order-content{
-    float: left;
+    display: inline;
     image{
         width:120px;
         height:120px;   
@@ -12,7 +12,8 @@
         background-repeat: no-repeat;
     }
     .content-box{
-        display: block;
+        display: flex;
+        flex-direction: column;
         .goods-item{
             font-size: 15px;
             margin-top: 6px;
@@ -27,18 +28,18 @@
 
 <template>
 
-   <view class="confirm-order">
+  
 
-        <addressItem class= "address" :item.sync="addressItem"></addressItem>
-        <view class="order-content">
-            <image src ="{{goodsImage}}"></image>
-            <view class="contex-box">
-                <text class="goods-item">{{goodsName}} </text>
-                <text class="goods-item">价格${{goodsPrice}}</text>
-            </view>
+    <addressItem class= "address" :item.sync="addressItem" @onItemClick.user="onClickAddress"/>
+    <view class="order-content">
+        <image src ="{{goodsImage}}"></image>
+        <view class="contex-box">
+            <text class="goods-item">{{goodsName}} </text>
+            <text class="goods-item">价格${{goodsPrice}}</text>
         </view>
+    </view>
 
-   </view>
+
    
 </template>
 
@@ -58,7 +59,7 @@ export default class OrderConfirm extends wepy.page {
     };
 
     components = {
-         addressItem:Item,
+        addressItem:Item,
     }
 
     data={
@@ -67,7 +68,16 @@ export default class OrderConfirm extends wepy.page {
         goodsNum:"",
         goodsName:"",
         goodsPrice:"",
-        goodsImage:""
+        goodsImage:"",
+        address:{"name":"","phone":""},
+    }
+
+    methods = {
+        onClickAddress(){
+             wepy.navigateTo({
+                url: `/pages/address/selected`
+            });
+        }
     }
 
     onLoad(options) {
@@ -75,6 +85,14 @@ export default class OrderConfirm extends wepy.page {
         this.goodsNum = options.goodsNum;
         this.getGoodsDtl();
        
+    }
+
+    onShow(){
+        const address = wepy.getStorageSync('address');
+        if(address!=""){
+            this.address = address;
+            this.addressItem.text= address.name;
+        }
     }
 
      async getGoodsDtl() {

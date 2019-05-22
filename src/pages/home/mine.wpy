@@ -28,7 +28,7 @@
 
     <view class="container">
 
-        <userinfo :header.sync="header"></userinfo>
+        <userinfo :header.sync="userInfo"></userinfo>
         <orderEntry/>
         <view class="line"/>
         <!-- <orderItem :item.sync="orderItem"></orderItem>
@@ -40,6 +40,7 @@
             <phoneItem :item.sync="phoneItem"/>
         </button>
         <serviceItem :item.sync="serviceItem" @onItemClick.user="onClickService"/>
+        <logoutItem :item.sync="logoutItem" @onItemClick.user="onClickLogout"/>
         
 
     </view>
@@ -63,24 +64,24 @@ export default class CategoryPage extends wepy.page {
     };
 
     data = {
-        header:{},
-        //orderItem:{"text":"我的订单"},
+        userInfo:{},
         //couponItem:{"text":"我的优惠卷","icon":"../../image/common/coupon.png"},
         //favoriteItem:{"text":"我的收藏","icon":"../../image/common/likes.png"},
         addressItem:{"text":"我的收获地址","icon":"../../image/common/address.png"},
         phoneItem:{"text":"联系客服","icon":"../../image/common/phone.png"},
-        serviceItem:{"text":"做一样的小程序","icon":"../../image/common/online.png"}
+        serviceItem:{"text":"做一样的小程序","icon":"../../image/common/online.png"},
+        logoutItem:{"text":"退出登陆","icon":""}
     };
 
     components = {
         userinfo: UserInfo,
         orderEntry:OrderEntry,
-        orderItem:Item,
         couponItem:Item,
         favoriteItem:Item,
         addressItem:Item,
         phoneItem:Item,
         serviceItem:Item,
+        logoutItem:Item
     };
 
     methods={
@@ -93,20 +94,28 @@ export default class CategoryPage extends wepy.page {
             wepy.navigateTo({
                 url: `/pages/web/webview?link=${"https://github.com/woaigmz/shop"}&title=${"关于我们"}`
             });
+        },
+        async onClickLogout(){
+
+            this.userInfo.username = header.username;
+            this.userInfo.avatar = header.avatar;
+
+            await wepy.setStorageSync('userInfo','');
+            await wepy.setStorageSync('token','');
+            
         }
     }
 
     onLoad() {
-        this.header=header;
-        //this.$apply();   
+        this.userInfo.username = header.username;
+        this.userInfo.avatar = header.avatar;
     }
 
     onShow(){
         let userInfo = wepy.getStorageSync('userInfo');
-        console.log(userInfo);
         if(userInfo!=""){
-            this.header.username = userInfo.nickName;
-            this.header.avatar=userInfo.avatarUrl;
+            this.userInfo.username = userInfo.nickName;
+            this.userInfo.avatar=userInfo.avatarUrl;
         }
     }
 
