@@ -25,7 +25,8 @@
 }
 
 .btn-buttom{
-    padding:10px;
+    padding-top:10px;
+    padding-bottom:10px;
     border-top: 1px solid #ededed;
     position: fixed;
     bottom: 0;
@@ -88,40 +89,35 @@ export default class Address extends wepy.page {
     }
 
     onLoad(options) {
-        if(options.addressId==""){
+        this.btnTip = options.addressId==undefined?"确认保存":"确定修改";
+        this.token = wepy.getStorageSync('token');
+        if(options.addressId==undefined){
             wx.setNavigationBarTitle({
                 title: "新增地址"
             });
-            this.btnTip = "确认保存"
             return;
         }
-        this.btnTip = "确定修改"
         this.addressId = options.addressId;
         this.addressName = options.addressName;
         this.phone = options.phone;
         this.username = wepy.getStorageSync('userInfo').nickName;
-        this.token = wepy.getStorageSync('token');
-        console.log(this.addressId)
+        
+        
     }
 
     methods = {
         inputUserName(e){
-            this.setData({
-                username: e.detail.value
-            })
+            this.username = e.detail.value
         },
-        inputPhone(e){
-            this.setData({
-                phone: e.detail.value
-            })            
+        inputPhone(e){   
+            this.phone = e.detail.value
+                       
         },
         inputAddressName(e){
-            this.setData({
-                addressName: e.detail.value
-            })                       
+            this.addressName = e.detail.value                  
         },
         saveAddress(){
-            if(this.addressId==""){
+            if(this.addressId==-1){
                 // 新增
                 this.newAddress();
             }else{
@@ -142,8 +138,10 @@ export default class Address extends wepy.page {
             toast.toast("请填写收货地址");
             return;
         }
-        var str = `{"userId":${that.token},"phone": "${that.phone}","description": ${that.addressName}}`;
-        await util.ajax({url:'address/queryByUserId',para:JSON.parse(str)}).then((res)=>{
+        that.addressId = Math.floor(Math.random()*10);
+        var str = `{"userId":${that.token},"phone": "${that.phone}","description": "${that.addressName}" }`;
+        console.log(str)
+        await util.ajax({url:'address/add',para:JSON.parse(str)}).then((res)=>{
             wx.hideLoading();
             wepy.navigateBack({delta: 1});
         }).catch((err)=>{

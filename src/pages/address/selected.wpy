@@ -20,7 +20,8 @@
     }
 }
 .btn-buttom{
-    padding:10px;
+    padding-top:10px;
+    padding-bottom:10px;
     border-top: 1px solid #ededed;
     position: fixed;
     bottom: 0;
@@ -99,7 +100,7 @@ export default class Address extends wepy.page {
         },
         newAddress(){
              wepy.navigateTo({
-                url: `/pages/address/modify?addressId=""`
+                url: `/pages/address/modify`
             });
         }
     }
@@ -112,6 +113,7 @@ export default class Address extends wepy.page {
 
     onShow(){
         this.selectedId = wepy.getStorageSync('address').id;
+        this.getAddressList();
     }
 
     async getAddressList(){
