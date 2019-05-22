@@ -1,12 +1,66 @@
-<style>
+<style lang="less" >
+.address-container{
+    padding: 10px;
+    display: flex; 
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: 1px solid #ededed;
+    align-items: center;
+    image{
+        width: 40rpx;
+        height: 40rpx;
+    }
+    .address-content{
+        margin-left: 25px;
+        display: flex; 
+        flex-direction: column;
+        font-size: 12px;
+        margin-left: 20rpx;
+        color: #1a1a1a;
+    }
+}
+.btn-buttom{
+    padding:10px;
+    border-top: 1px solid #ededed;
+    position: fixed;
+    bottom: 0;
+    z-index: 1001;
+    width: 100%;
+    font-size: 14px;
+    color: white;
+    align-self:center;
+    text-align: center;
+    background-color:#599eff; 
+}
+
 </style>
 
+
 <template>
+
+    <empty :show.sync="isEmpty" message="暂无发现数据"/>
+
+    <view class="qlist">
+        <view class = "address-container" wx:for="{{addressList}}" wx:for-index="index" wx:for-item="item" wx:key="index"  @tap="modifyAddress({{item}})">
+            <image class src="{{item.id==selectedId?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap="select({{item}})"/>
+            <view class="address-content">
+                <text class="address-name">收货地址：{{item.description}}</text>
+                <text class="address-phone">联系方式：{{item.phone}}</text>
+            </view>
+        </view>
+    </view>
+    
+    <view class="btn-buttom" @tap="newAddress">
+         <text>新增收货地址</text>  
+    </view>
   
 </template>
 
 <script>
 import wepy from 'wepy';
+import Empty from "@/components/empty"
+import util from '@/common/network';
+import toast from '@/common/utils';
 
 export default class Address extends wepy.page {
 
@@ -17,8 +71,63 @@ export default class Address extends wepy.page {
         navigationBarTextStyle: 'white'
     };
 
-    onLoad(options) {
-     
+    data = {
+        isEmpty:false,
+        token:"",
+        addressList:[],
+        selectedId:0,
+    };
+
+
+    components = {
+        empty:Empty,
+    };
+
+    methods ={
+        select(item){
+            var address = {"name":"","phone":"","id":""};
+            this.selectedId = item.id;
+            address.name = item.description;
+            address.phone = item.phone;
+            address.id = item.id;
+            wepy.setStorageSync('address',address);
+        },
+        modifyAddress(item){
+            wepy.navigateTo({
+                url: `/pages/address/modify?addressId=${item.id}&addressName=${item.description}&phone=${item.phone}`
+            });
+        },
+        newAddress(){
+             wepy.navigateTo({
+                url: `/pages/address/modify?addressId=""`
+            });
+        }
     }
+
+    onLoad(options) {
+        this.token = wepy.getStorageSync('token');
+        this.getAddressList();
+      
+    }
+
+    onShow(){
+        this.selectedId = wepy.getStorageSync('address').id;
+    }
+
+    async getAddressList(){
+        var that = this;
+        var str = `{"id":${that.token}}`;
+        await util.ajax({url:'address/queryByUserId',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            that.isEmpty = res.length==0;
+            that.addressList = res;
+            console.log(that.addressList)
+            that.$apply()
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+        
+    }
+
 }
 </script>

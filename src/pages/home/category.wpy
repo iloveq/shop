@@ -68,7 +68,7 @@
     </scroll-view>
     <scroll-view class="category-right" scroll-y scroll-with-animation="true">
         <view class="children">
-          <navigator hover-class="none" class="children-item" wx:for="{{goodsList}}" wx:for-item="item" wx:key="index" url="">
+          <navigator hover-class="none" class="children-item" wx:for="{{goodsList}}" wx:for-item="item" wx:key="index" url="/pages/goods/detail?goodId={{item.id}}">
             <image class="child-image" src="{{item.imageUrlList[0]}}"></image>
             <view class="child-name">{{item.name}}</view>
           </navigator>

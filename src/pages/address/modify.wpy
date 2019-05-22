@@ -1,24 +1,193 @@
-<style>
+<style lang="less" >
+
+.container-other{
+    margin-top: 1rpx;
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;  
+    border-bottom: 1rpx solid #dbdbdb; 
+    .other-name{
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        color: #1a1a1a;
+    }
+    .other-desc{
+        margin-left: 20px;
+        display: flex;
+        font-size: 11px;
+        flex-direction: column;
+        margin-right: 20rpx;
+        color: black;
+    }
+}
+
+.btn-buttom{
+    padding:10px;
+    border-top: 1px solid #ededed;
+    position: fixed;
+    bottom: 0;
+    z-index: 1001;
+    width: 100%;
+    font-size: 14px;
+    color: white;
+    align-self:center;
+    text-align: center;
+    background-color:#599eff; 
+}
+
 </style>
 
 <template>
+
+     <view class="container-other" >
+        <text class="other-name">收货人</text>
+        <input class="other-desc" type="string" placeholder="名字" bindinput="inputUserName" maxlength="30" value="{{username}}" />
+    </view>
+
+     <view class="container-other" >
+        <text class="other-name">联系电话</text>
+        <input class="other-desc" type="number" placeholder="11位手机号" bindinput="inputPhone" maxlength="11" value="{{phone}}" />
+    </view>
+
+     <view class="container-other" >
+        <text class="other-name">联系地址</text>
+        <input class="other-desc" type="string" placeholder="地区-街道-门派信息" bindinput="inputAddressName" maxlength="50" value="{{addressName}}" />
+    </view>
+
+    <view class="btn-buttom" @tap="saveAddress">
+         <text>{{btnTip}}</text>  
+    </view>
   
 </template>
 
+
 <script>
 import wepy from 'wepy';
+import util from '@/common/network';
+import toast from '@/common/utils';
 
 export default class Address extends wepy.page {
 
     config = {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
-        navigationBarTitleText: '地址修改',
+        navigationBarTitleText: '修改地址',
         navigationBarTextStyle: 'white'
     };
 
-    onLoad(options) {
-     
+    data = {
+        addressId:-1,
+        username:"",
+        phone:"",
+        addressName:"",
+        token:"",
+        btnTip:""
     }
+
+    onLoad(options) {
+        if(options.addressId==""){
+            wx.setNavigationBarTitle({
+                title: "新增地址"
+            });
+            this.btnTip = "确认保存"
+            return;
+        }
+        this.btnTip = "确定修改"
+        this.addressId = options.addressId;
+        this.addressName = options.addressName;
+        this.phone = options.phone;
+        this.username = wepy.getStorageSync('userInfo').nickName;
+        this.token = wepy.getStorageSync('token');
+        console.log(this.addressId)
+    }
+
+    methods = {
+        inputUserName(e){
+            this.setData({
+                username: e.detail.value
+            })
+        },
+        inputPhone(e){
+            this.setData({
+                phone: e.detail.value
+            })            
+        },
+        inputAddressName(e){
+            this.setData({
+                addressName: e.detail.value
+            })                       
+        },
+        saveAddress(){
+            if(this.addressId==""){
+                // 新增
+                this.newAddress();
+            }else{
+                // 修改
+                this.updateAddress();
+            }
+
+        }
+    }
+
+    async newAddress(){
+        var that = this;
+        if(that.phone==""){
+            toast.toast("请填写联系方式");
+            return;
+        }
+        if(that.addressName==""){
+            toast.toast("请填写收货地址");
+            return;
+        }
+        var str = `{"userId":${that.token},"phone": "${that.phone}","description": ${that.addressName}}`;
+        await util.ajax({url:'address/queryByUserId',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            wepy.navigateBack({delta: 1});
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+        
+    
+    }
+
+
+    async updateAddress(){
+        var that = this;
+        if(that.addressId==""){
+            toast.toast(" exception : 跳转异常");
+            return;
+        }
+        if(that.phone==""){
+            toast.toast("请填写联系方式");
+            return;
+        }
+        if(that.addressName==""){
+            toast.toast("请填写收货地址");
+            return;
+        }
+        var str = `{"id":${that.addressId},"userId":${that.token},"phone": "${that.phone}","description": "${that.addressName}" }`;
+        console.log(str)
+        await util.ajax({url:'address/update',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            that.changeState()
+            wepy.navigateBack({delta: 1});
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+    }
+
+    changeState(){
+        var address = {"name":"","phone":"","id":""};
+        address.name = this.addressName;
+        address.phone = this.phone;
+        address.id = this.addressId;
+        wepy.setStorageSync('address',address);
+    }
+
+
+
 }
 </script>

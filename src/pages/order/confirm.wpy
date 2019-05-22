@@ -227,7 +227,7 @@ export default class OrderConfirm extends wepy.page {
         goodsPrice:"",
         goodsImage:"",
         priceTotal:"",
-        address:{"name":"","phone":"","id":""},
+        address:{"name":"","phone":"","id":-1},
         couponItem:{"text":"优惠卷","icon":""},
     }
 
@@ -256,7 +256,6 @@ export default class OrderConfirm extends wepy.page {
         const address = wepy.getStorageSync('address');
         if(address!=""){
             this.address = address;
-            this.addressItem.text= address.name;
         }
     }
 
