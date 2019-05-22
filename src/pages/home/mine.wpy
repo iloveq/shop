@@ -86,6 +86,13 @@ export default class CategoryPage extends wepy.page {
 
     methods={
         onClickAddress(){
+            let token = wepy.getStorageSync('token');
+            if(token==""){
+                wepy.navigateTo({
+                    url: `/pages/authorize/authorize`
+                });
+                return;
+            }
             wepy.navigateTo({
                 url: `/pages/address/selected`
             });

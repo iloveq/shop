@@ -1,24 +1,149 @@
 <style lang="less">
 
-.address{
+.container-address{
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border-bottom: 1rpx solid #dbdbdb;
+    border-top: 1rpx solid #dbdbdb;
     margin-top: 10px;
-}
-.order-content{
-    display: inline;
-    image{
-        width:120px;
-        height:120px;   
-        background-size: auto;
-        background-repeat: no-repeat;
-    }
-    .content-box{
+    margin-bottom: 10px;
+    .address-icon{
+        width: 40rpx;
+        height: 40rpx;
+    }        
+    .address-content{
         display: flex;
+        font-size: 12px;
         flex-direction: column;
-        .goods-item{
-            font-size: 15px;
-            margin-top: 6px;
-            margin-left:8px;
+        margin-left: 20rpx;
+        color: #1a1a1a;
+    }
+}
+
+.container-goods{
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border-bottom: 1rpx solid #dbdbdb;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    image{
+        width: 160rpx;
+        height: 160rpx;
+    }       
+    .goods-box{
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        margin-left: 20rpx;
+        justify-content: start;
+        color: #1a1a1a;
+        .goods-name{
+            font-size: 13px;
+            color: #1a1a1a;
         }
+        .goods-price{
+            margin-top: 5px;
+            font-size: 13px;
+            color: red;
+        }
+    }
+}
+
+.ps{
+    margin-left: 20rpx;
+    font-size: 12px;
+}
+
+.container-coupon{
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1rpx solid #dbdbdb;
+    border-top: 1rpx solid #dbdbdb;
+    margin-top: 30px;
+    margin-bottom: 10px;     
+    .coupon-name{
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        color: #1a1a1a;
+    }
+    .coupon-desc{
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        margin-right: 20rpx;
+        color: #4F5160;
+    }
+}
+
+
+.container-other{
+    margin-top: 1rpx;
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    border-bottom: 1rpx solid #dbdbdb; 
+    .other-name{
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        color: #1a1a1a;
+    }
+    .other-desc{
+        display: flex;
+        font-size: 11px;
+        flex-direction: column;
+        margin-right: 20rpx;
+        color: black;
+    }
+}
+
+.btn-buttom{
+    border-top: 1px solid #ededed;
+    width:100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 1001;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    .btn-left{
+        width: 65%;
+        background-color: white;
+        color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        .left-text{
+            margin-left: 20rpx;
+            font-size: 14px;
+            color: #000;
+        }
+        .left-desc{
+            font-size: 15px;
+            color: #ff4856;
+        }
+    }
+    .btn-right{
+        padding:10px;
+        align-self:center;
+        align-content: center;
+        width: 35%;
+        color: white;
+        font-size: 16px;
+        text-align: center;
+        background-color:#ff4856;
     }
 
 }
@@ -28,24 +153,56 @@
 
 <template>
 
-  
+    <view class="container-address" @tap="onClickAddress">
+       <image class="address-icon" src="../../image/common/address.png"></image>
+       <view class="address-content">
+           <text>{{address.phone}}</text>
+           <text>{{address.name}}</text>
+       </view>  
+    </view>
 
-    <addressItem class= "address" :item.sync="addressItem" @onItemClick.user="onClickAddress"/>
-    <view class="order-content">
+
+    <view class="container-goods">
         <image src ="{{goodsImage}}"></image>
-        <view class="contex-box">
-            <text class="goods-item">{{goodsName}} </text>
-            <text class="goods-item">价格${{goodsPrice}}</text>
+        <view class="goods-box">
+            <text class="goods-name">{{goodsName}} </text>
+            <text class="goods-price">价格${{goodsPrice}}</text>
         </view>
     </view>
 
+    <input class="ps" type="string" placeholder="留言：选填，可填写您的要求" maxlength="30" value="{{xx}}" />
+    
+    <view class="container-coupon" @tap="">
+        <text class="coupon-name">优惠卷</text>
+        <text class="coupon-desc">0张可用</text>
+    </view>
+
+     <view class="container-other">
+        <text class="other-name">商品总价</text>
+        <text class="other-desc">￥{{priceTotal}}</text>
+    </view>
+
+
+     <view class="container-other" >
+        <text class="other-name">运费</text>
+        <text class="other-desc">+ ￥10</text>
+    </view>
+
+    <view class="btn-buttom">
+        <view class="btn-left">
+            <text class="left-text">实付：</text>
+            <text class="left-desc">￥{{priceTotal}}</text>
+        </view>
+        <view class="btn-right" @tap="payOrder">
+            <text>提交订单</text>
+        </view>
+    </view>
 
    
 </template>
 
 <script>
 import wepy from 'wepy';
-import Item from '@/components/item';
 import util from '@/common/network';
 import toast from '@/common/utils';
 
@@ -59,17 +216,19 @@ export default class OrderConfirm extends wepy.page {
     };
 
     components = {
-        addressItem:Item,
+        
     }
 
     data={
-        addressItem:{"text":"您还没有收获地址点击这里创建","icon":"../../image/common/address.png"},
+        token:"",
         goodsId:"",
         goodsNum:"",
         goodsName:"",
         goodsPrice:"",
         goodsImage:"",
-        address:{"name":"","phone":""},
+        priceTotal:"",
+        address:{"name":"","phone":"","id":""},
+        couponItem:{"text":"优惠卷","icon":""},
     }
 
     methods = {
@@ -83,7 +242,13 @@ export default class OrderConfirm extends wepy.page {
     onLoad(options) {
         this.goodsId = options.goodId;
         this.goodsNum = options.goodsNum;
+        if(this.address.name==""){
+            this.address.id=""
+            this.address.name = "点击这里创建 : )"
+            this.address.phone = "您还没有收获地址 "
+        }
         this.getGoodsDtl();
+        this.token = wepy.getStorageSync('token');
        
     }
 
@@ -106,7 +271,35 @@ export default class OrderConfirm extends wepy.page {
             that.goodsName = res.name;
             that.goodsPrice = res.price;
             that.goodsImage = res.imageUrlList[0];
+            that.priceTotal = that.goodsPrice * that.goodsNum;
             that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+    }
+
+    async payOrder(){
+        wx.showLoading({
+            title: '加载中'
+        });
+        var that = this;
+        if(that.address.id==""){
+            toast.toast("请选择收获地址");
+            return;
+        }
+        if(that.goodsId==""){
+            toast.toast("商品 id 不存在");
+            return;
+        }
+        if(that.token==""){
+            toast.toast(" token 获取失败");
+            return;
+        }
+        var str = `{"address": "${that.address.name}","goodsIdList": [${that.goodsId}],"phone": "${that.address.phone}","userId": ${that.token}}`;
+        await util.ajax({url:'order/add',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            toast.toast("订单创建成功");
+            wepy.navigateBack({delta: 1});
         }).catch((err)=>{
             wx.hideLoading();
         });

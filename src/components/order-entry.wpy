@@ -72,7 +72,14 @@ export default class OrderEntry extends wepy.component {
     methods = {
 
         clickEntry(index){
-             wepy.navigateTo({
+            let token = wepy.getStorageSync('token');
+            if(token==""){
+                wepy.navigateTo({
+                    url: `/pages/authorize/authorize`
+                });
+                return;
+            }
+            wepy.navigateTo({
                 url: `/pages/order/types?type=${index}`
             });
         }

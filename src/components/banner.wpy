@@ -70,7 +70,7 @@ export default class Banner extends wepy.component {
     methods = {
         jumpDetail(para) {
             wepy.navigateTo({
-                url: `/pages/moviedetail/moviedetail?classifyId=${para}`
+                url: `/pages/order/confirm?goodId=${1}&goodsNum=${5}`
             });
         }
     };

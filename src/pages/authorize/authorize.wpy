@@ -32,7 +32,7 @@
             <text>{{userInfo.nickName}}</text>
         </view>
         <view class="contain-authorize">
-            <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">获取登录授权</button>
+            <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">请您授权登录</button>
         </view>
     </view>
 </template>
