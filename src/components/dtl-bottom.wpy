@@ -103,7 +103,7 @@ export default class DtlBottom extends wepy.component{
     };
 
     methods = {
-          homePage() {
+        homePage() {
           wepy.switchTab({
             url: '/pages/home/main'
           })

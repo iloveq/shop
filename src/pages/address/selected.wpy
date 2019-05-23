@@ -7,11 +7,13 @@
     border-bottom: 1px solid #ededed;
     align-items: center;
     image{
-        width: 40rpx;
-        height: 40rpx;
+        width:60rpx;
+        height:52rpx;
+
     }
     .address-content{
         margin-left: 25px;
+        width: 100%;
         display: flex; 
         flex-direction: column;
         font-size: 12px;
@@ -41,10 +43,10 @@
 
     <empty :show.sync="isEmpty" message="暂无发现数据"/>
 
-    <view class="qlist">
-        <view class = "address-container" wx:for="{{addressList}}" wx:for-index="index" wx:for-item="item" wx:key="index"  @tap="modifyAddress({{item}})">
+    <view class="list">
+        <view class = "address-container" wx:for="{{addressList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
             <image class src="{{item.id==selectedId?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap="select({{item}})"/>
-            <view class="address-content">
+            <view class="address-content" @tap="modifyAddress({{item}})">
                 <text class="address-name">收货地址：{{item.description}}</text>
                 <text class="address-phone">联系方式：{{item.phone}}</text>
             </view>

@@ -295,6 +295,7 @@ export default class OrderConfirm extends wepy.page {
             return;
         }
         var str = `{"address": "${that.address.name}","goodsIdList": [${that.goodsId}],"phone": "${that.address.phone}","userId": ${that.token}}`;
+        console.log(str);
         await util.ajax({url:'order/add',para:JSON.parse(str)}).then((res)=>{
             wx.hideLoading();
             toast.toast("订单创建成功");

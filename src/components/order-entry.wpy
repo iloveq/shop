@@ -46,12 +46,12 @@ export default class OrderEntry extends wepy.component {
             type: Array,
             default: [
                         {
-                            icon: "../../image/order/order_pay.png",
-                            des: "待付款",
-                        },
-                        {
                             icon: "../../image/order/order_receiver.png",
                             des: "待收货",
+                        },
+                        {
+                            icon: "../../image/order/order_pay.png",
+                            des: "待付款",
                         },
                         {
                             icon: "../../image/order/order_finish.png",

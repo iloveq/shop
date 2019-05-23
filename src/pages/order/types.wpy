@@ -1,9 +1,72 @@
-<style>
+<style lang="less">
+
+.order-box{
+    border-bottom: 1rpx solid #dbdbdb;
+    .order-title{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .order-title-left{
+            margin-top: 25rpx;
+            margin-left: 10rpx;
+            font-size: 13px;
+            color: #000;
+        }
+        .order-title-right{
+            margin: 10rpx;
+            font-size: 13px;
+            color: red;
+        }
+    }
+    .goods-list{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        .goods-list-text{
+            margin: 13rpx;
+            font-size: 12px;
+            color: black;
+        }
+    }
+
+    .order-time{
+        font-size: 13px;
+        margin-top: 10rpx;
+        margin-right: 10rpx;
+        margin-bottom: 18rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+}
+
 </style>
 
 <template>
-    <tab @currentTab.user="getCurrentTab" :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
+    <tab @currentTab.user="onTabSelected" :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
+    <empty :show.sync="isEmpty" message="暂无发现数据"/>
 
+    
+    <view class = "order-box" wx:for="{{orderList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+
+        <view class="order-title">
+            <text class="order-title-left">订单号：{{item.content.code}}</text>
+            <text class="order-title-right">{{tabList[currentTab]}}  </text>
+        </view>
+
+        <view class = "goods-list" wx:for="{{item.content.goodsList}}" wx:for-index="index" wx:for-item="subItem" wx:key="index">
+            <text class="goods-list-text">{{subItem.name}} </text>  <text class="goods-list-text">{{subItem.price}} 元 </text> 
+        </view>
+
+        <view class="order-time">
+            <text>下单时间：{{item.content.createdTime}}</text>
+        </view>
+
+    </view>
+
+
+   
   
 </template>
 
@@ -12,6 +75,7 @@ import wepy from 'wepy';
 import Tab from '@/components/tab'
 import util from '@/common/network';
 import toast from '@/common/utils';
+import Empty from "@/components/empty"
 
 export default class OrderTypes extends wepy.page {
 
@@ -24,17 +88,111 @@ export default class OrderTypes extends wepy.page {
 
     components = {
         tab: Tab,
-    
+        empty:Empty,
     }
 
     data = {
+        isEmpty:false,
         currentTab:0,
-        tabList: ["待付款", "待收货", "已完成", "已取消"],
+        tabList: ["待收货", "待付款", "已完成", "已取消"],
+        orderList:[],
+        oList0:[],
+        oList1:[],
+        oList2:[],
+        oList3:[],
 
     }
 
-    onLoad(options) {
+    methods ={
+        onTabSelected(index){
+            this.currentTab = index;
+            this.onSelected(index);
+        }
+    }
+
+    async onLoad(options) {
        this.currentTab = options.type;
+       var userId = wepy.getStorageSync('token');
+       // 因为没有通过 userId 查询的接口 ，先拿到全部再通过 state 匹配
+       var res = await util.ajax({url:'order/queryAll'})
+       for(var i =0;i<res.length;i++){
+            if(res[i].userId!=userId){
+                continue;
+            }
+            var order = {"id":"","content":{}};
+            switch(res[i].state){
+                case 0:
+                    order.id = res[i].id;
+                    order.content = await util.ajax({url:'order/queryById',para:JSON.parse(`{"id":${order.id}}`)});
+                    order.content.createdTime = new Date(order.content.createdTime).toLocaleString()
+                    this.oList0.push(order);
+                    break;
+                case 1:
+                    order.id = res[i].id;
+                    order.content = await util.ajax({url:'order/queryById',para:JSON.parse(`{"id":${order.id}}`)});
+                    order.content.createdTime = new Date(order.content.createdTime).toLocaleString()
+                    this.oList1.push(order);
+                    break;
+                case 2:
+                    order.id = res[i].id;
+                    order.content = await util.ajax({url:'order/queryById',para:JSON.parse(`{"id":${order.id}}`)});
+                    order.content.createdTime = new Date(order.content.createdTime).toLocaleString()
+                    this.oList2.push(order);
+                    break;
+                case 3:
+                    order.id = res[i].id;
+                    order.content = await util.ajax({url:'order/queryById',para:JSON.parse(`{"id":${order.id}}`)});
+                    order.content.createdTime = new Date(order.content.createdTime).toLocaleString()
+                    this.oList3.push(order);
+                    break;
+            }
+       }
+       this.onSelected(this.currentTab)
     }
+
+
+    async onSelected(index){
+        wx.showLoading({
+            title: '加载中'
+        });
+        this.orderList = []
+        switch(index){
+            case 0:
+                this.isEmpty = this.oList0.length==0
+                if(this.oList0.length!=0){
+                    this.orderList = this.oList0;
+                }
+                break;
+            case 1:
+                this.isEmpty = this.oList1.length==0 
+                if(this.oList1.length!=0){
+                    this.orderList = this.oList1;
+                }
+                break;
+            case 2:
+                this.isEmpty = this.oList2.length==0
+                if(this.oList2.length!=0){
+                    this.orderList = this.oList2;
+                }
+                break;
+            case 3:
+                this.isEmpty = this.oList3.length==0 
+                if(this.oList3.length!=0){
+                    this.orderList = this.oList3;
+                }
+                break;
+        }
+        this.$apply();
+        wx.hideLoading();
+
+    }
+
+  
+
+    
+
+ 
+   
+
 }
 </script>

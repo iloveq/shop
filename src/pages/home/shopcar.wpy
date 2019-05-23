@@ -3,17 +3,34 @@
 
 <template>
 
+    <empty :show.sync="isEmpty" message="暂无发现数据"/>
+
 </template>
 
 <script>
 import wepy from 'wepy';
+import Empty from "@/components/empty"
+
 export default class CategoryPage extends wepy.page {
+
     config = {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#599eff',
         navigationBarTitleText: '购物车',
         navigationBarTextStyle: 'white'
     };
+
+    components = {
+        empty:Empty,
+    }
+
+    data = {
+        isEmpty:true,
+    }
+
+    onLoad(options) {
+        
+    }
 
 }
 </script>
