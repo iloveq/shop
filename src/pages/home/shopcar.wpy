@@ -1,9 +1,140 @@
 <style lang="less">
+.btn-buttom{
+    padding-top:10px;
+    padding-bottom:10px;
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    bottom: 0;
+    z-index: 1001;
+    width: 100%;
+    font-size: 14px;
+    align-self:center;
+    text-align: center;
+    background-color:white; 
+    .left{
+        margin-left: 20rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-self: center;
+        image{
+            width:47rpx;
+            height:45rpx;
+        }
+        .left-text{
+            text-align: center;
+            margin-top: 4rpx;
+            margin-left: 10rpx;
+            font-size: 12px;
+            color: red
+        }
+    }
+    .right{
+        margin-right: 20rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-self: center;
+        .left-part{
+            width:200rpx;
+            margin-right: 20rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            .total-price{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                margin-right:5rpx;
+                .name{
+                    color: #000;
+                    font-size:13px; 
+                    font-weight: blod;
+                }
+                .price{
+                    font-size:14px; 
+                    color: red;
+                }
+            }
+            .total-price-desc{
+                font-size: 10px;
+                color:#4F5160;
+
+            }
+        }
+        .right-part{
+            margin-top: 4rpx;
+            padding: 12rpx;
+            background-color:red;
+            color:white;
+            font-size: 11px;
+        }
+    }
+    
+}
+
+.goods-container{
+    padding: 10px;
+    display: flex; 
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: 1px solid #ededed;
+    align-items: center;
+    image{
+        width:47rpx;
+        height:45rpx;
+
+    }
+    .goods-content{
+        margin-left: 25px;
+        width: 100%;
+        display: flex; 
+        flex-direction: column;
+        font-size: 12px;
+        margin-left: 20rpx;
+        color: #1a1a1a;
+        image{
+            width:90rpx;
+            height:90rpx;
+        }
+    }
+}
 </style>
 
 <template>
 
     <empty :show.sync="isEmpty" message="暂无发现数据"/>
+
+     <view class="list">
+        <view class = "goods-container" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+            <image class src="{{isSelectedAll?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap=""/>
+            <view class="goods-content">
+                <image class="goods-icon" src="{{item.icon}}" />
+                <text class="goods-name">{{item.name}}</text>
+                <text class="goods-price">价格：{{item.phone}}</text>
+            </view>
+        </view>
+    </view>
+
+    <view class="btn-buttom">
+        <view class="left">
+             <image class src="{{isSelectedAll?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap=""/>
+             <text class="left-text">全选</text>
+        </view>
+        <view class="right">
+            <view class="left-part">
+                <view class="total-price">
+                    <text class="name">合计 :</text>  <text class="price">￥{{totalPrice}}</text>
+                </view>
+                <view class="total-price-desc">总额{{totalPrice}}元,活动优惠0元 </view>
+            </view>
+            <text class="right-part">去结算({{goodsList.length}}件)</text>  
+        </view>
+    </view>
 
 </template>
 
@@ -26,6 +157,9 @@ export default class CategoryPage extends wepy.page {
 
     data = {
         isEmpty:true,
+        isSelectedAll:true,
+        goodsList:[],
+        totalPrice:0
     }
 
     onLoad(options) {
