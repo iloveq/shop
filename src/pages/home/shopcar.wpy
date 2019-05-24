@@ -40,7 +40,6 @@
         justify-content: flex-start;
         align-self: center;
         .left-part{
-            width:200rpx;
             margin-right: 20rpx;
             display: flex;
             flex-direction: column;
@@ -78,14 +77,17 @@
 }
 
 .goods-container{
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
     padding: 10px;
     display: flex; 
     flex-direction: row;
     justify-content: flex-start;
     border-bottom: 1px solid #ededed;
+    border-top: 1px solid #ededed;
     align-items: center;
     image{
-        width:47rpx;
+        width:49rpx;
         height:45rpx;
 
     }
@@ -93,7 +95,7 @@
         margin-left: 25px;
         width: 100%;
         display: flex; 
-        flex-direction: column;
+        flex-direction: row;
         font-size: 12px;
         margin-left: 20rpx;
         color: #1a1a1a;
@@ -101,38 +103,80 @@
             width:90rpx;
             height:90rpx;
         }
+        .goods-desc{
+            margin-left: 10px;
+            display: flex; 
+            flex-direction: column;
+        }
     }
+}
+
+.container-other{
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
+    background: #fff;
+    padding: 34rpx 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    border-top: 1rpx solid #dbdbdb; 
+    border-bottom: 1rpx solid #dbdbdb; 
+    .other-name{
+        display: flex;
+        font-size: 12px;
+        flex-direction: column;
+        color: #1a1a1a;
+    }
+    .other-desc{
+        display: flex;
+        font-size: 11px;
+        flex-direction: column;
+        margin-right: 20rpx;
+        font-weight: 900;
+        color: black;
+    }
+}
+.list{
+    margin-top: 10rpx;
 }
 </style>
 
 <template>
 
-    <empty :show.sync="isEmpty" message="暂无发现数据"/>
+    <view class="container-other" @tap="toMain">
+        <text class="other-name">全部宝贝 {{aNum}} 件</text>
+        <text class="other-desc">再去逛逛</text>
+    </view>
 
-     <view class="list">
+    <empty :show.sync="isEmpty" message="空空如也"/>
+
+    <view class="list">
         <view class = "goods-container" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-            <image class src="{{isSelectedAll?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap=""/>
+            <image class src="{{selectedList[index]?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap="clickCheck({{index}})"/>
             <view class="goods-content">
                 <image class="goods-icon" src="{{item.icon}}" />
-                <text class="goods-name">{{item.name}}</text>
-                <text class="goods-price">价格：{{item.phone}}</text>
+                <view class="goods-desc">
+                    <text class="goods-name">{{item.name}}</text>
+                    <text class="goods-price">价格(元)：{{item.price}}</text>
+                    <text class="goods-num">件数(件)：{{item.num}}</text>
+                </view>   
             </view>
         </view>
     </view>
 
     <view class="btn-buttom">
         <view class="left">
-             <image class src="{{isSelectedAll?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap=""/>
+             <image class src="{{isSelectedAll?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap="clickTotal"/>
              <text class="left-text">全选</text>
         </view>
         <view class="right">
             <view class="left-part">
                 <view class="total-price">
-                    <text class="name">合计 :</text>  <text class="price">￥{{totalPrice}}</text>
+                    <text class="name">合计 :</text>  <text class="price">￥{{aPrice}}</text>
                 </view>
-                <view class="total-price-desc">总额{{totalPrice}}元,活动优惠0元 </view>
+                <view class="total-price-desc">总额{{aPrice}}元,活动优惠0元 </view>
             </view>
-            <text class="right-part">去结算({{goodsList.length}}件)</text>  
+            <text class="right-part" @tap = "payOrder">去结算({{aNum}}件)</text>  
         </view>
     </view>
 
@@ -159,11 +203,87 @@ export default class CategoryPage extends wepy.page {
         isEmpty:true,
         isSelectedAll:true,
         goodsList:[],
-        totalPrice:0
+        selectedList:[],
+        aPrice: 0,
+        aNum:0
     }
 
     onLoad(options) {
         
+    }
+
+    computed = {
+        
+    }
+
+    methods ={
+        toMain(){
+            console.log(111)
+            wepy.switchTab({
+                url: '/pages/home/main'
+            })
+        },
+        clickCheck(index){
+            console.log(index)
+            console.log(this.selectedList)
+            this.selectedList[index]=!this.selectedList[index];
+            this.isSelectedAll = this.selectedList[index]
+            this.$apply();
+            console.log(this.selectedList)
+        },
+        clickTotal(){
+            this.isSelectedAll = !this.isSelectedAll;
+            for(var i=0;i<this.goodsList.length;i++){
+                this.selectedList[i] = this.isSelectedAll;
+            }
+            this.$apply();
+        }
+    }
+
+    sumPrice () {
+        var totalPrice = 0;
+        for(var i=0;i<this.goodsList.length;i++){
+             totalPrice += this.goodsList[i].price*this.goodsList[i].num;
+        }
+        this.aPrice = totalPrice;
+    }
+    sumNum () {
+        var totalNum = 0;
+        for(var i=0;i<this.goodsList.length;i++){
+            totalNum += this.goodsList[i].num;
+        }
+        this.aNum = totalNum;
+    }
+
+    onShow(){
+        wx.showLoading({
+            title: '加载中'
+        });
+        this.isEmpty = wepy.getStorageSync('shopcar')==""
+        this.goodsList = wepy.getStorageSync('shopcar');
+        console.log(this.goodsList)
+        this.sumPrice()
+        this.sumNum()
+        wx.hideLoading();
+        for(var i=0;i<this.goodsList.length;i++){
+            this.selectedList[i]= true;
+        }
+        this.$apply()
+    }
+
+    payOrder(){
+        // 去下单
+        var goodsIdList = [];
+        var goodsNumList= [];
+        for(var i=0;i<this.goodsList.length;i++){
+             goodsIdList.push(this.goodsList[i].id);
+             goodsNumList.push(this.goodsList[i].num);
+        }
+        var json=JSON.stringify(goodsIdList);
+        var json1=JSON.stringify(goodsNumList);
+        wepy.navigateTo({
+            url: `/pages/order/confirm?goodsIdList=${json}&goodsNumList=${json1}&type=${0}`
+        });
     }
 
 }

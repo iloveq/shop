@@ -33,8 +33,8 @@
     margin-top: 10px;
     margin-bottom: 10px;
     image{
-        width: 160rpx;
-        height: 160rpx;
+        width: 140rpx;
+        height: 140rpx;
     }       
     .goods-box{
         display: flex;
@@ -161,12 +161,14 @@
        </view>  
     </view>
 
-
-    <view class="container-goods">
-        <image src ="{{goodsImage}}"></image>
-        <view class="goods-box">
-            <text class="goods-name">{{goodsName}} </text>
-            <text class="goods-price">价格${{goodsPrice}}</text>
+    <view class = "goods-list" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+        <view class="container-goods">
+            <image src ="{{item.imageUrlList[0]}}"></image>
+            <view class="goods-box">
+                <text class="goods-name">{{item.name}} </text>
+                <text class="goods-price">单价(元)：{{item.price}}</text>
+                <text class="goods-name">数量(件)：{{goodsNumList[index]}}</text>
+            </view>
         </view>
     </view>
 
@@ -179,7 +181,7 @@
 
      <view class="container-other">
         <text class="other-name">商品总价</text>
-        <text class="other-desc">￥{{priceTotal}}</text>
+        <text class="other-desc">￥{{totalPrice}}</text>
     </view>
 
 
@@ -191,7 +193,7 @@
     <view class="btn-buttom">
         <view class="btn-left">
             <text class="left-text">实付：</text>
-            <text class="left-desc">￥{{priceTotal}}</text>
+            <text class="left-desc">￥{{totalPrice}}</text>
         </view>
         <view class="btn-right" @tap="payOrder">
             <text>提交订单</text>
@@ -221,14 +223,12 @@ export default class OrderConfirm extends wepy.page {
 
     data={
         token:"",
-        goodsId:"",
-        goodsNum:"",
-        goodsName:"",
-        goodsPrice:"",
-        goodsImage:"",
-        priceTotal:"",
+        goodsNumList:[],
+        totalPrice:0,
+        goodsList:[],
         address:{"name":"","phone":"","id":-1},
         couponItem:{"text":"优惠卷","icon":""},
+        type:-1
     }
 
     methods = {
@@ -239,15 +239,26 @@ export default class OrderConfirm extends wepy.page {
         }
     }
 
+    sumPrice () {
+        var price = 0;
+        for(var i=0;i<this.goodsList.length;i++){
+             price += this.goodsList[i].price * this.goodsList[i].num;
+             console.log(price)
+        }
+        this.totalPrice = price + 10;
+        this.$apply();
+    }
+
     onLoad(options) {
-        this.goodsId = options.goodId;
-        this.goodsNum = options.goodsNum;
+        this.goodsIdList = JSON.parse(options.goodsIdList);
+        this.goodsNumList = JSON.parse(options.goodsNumList);
+        this.type = options.type;
         if(this.address.name==""){
             this.address.id=""
             this.address.name = "点击这里创建 : )"
             this.address.phone = "您还没有收获地址 "
         }
-        this.getGoodsDtl();
+        this.getGoodsList();
         this.token = wepy.getStorageSync('token');
        
     }
@@ -259,22 +270,24 @@ export default class OrderConfirm extends wepy.page {
         }
     }
 
-     async getGoodsDtl() {
+     async getGoodsList() {
         wx.showLoading({
             title: '加载中'
         });
         var that = this;
-        var str = `{"id":${that.goodsId}}`;
-        await util.ajax({url:'goods/queryById',para:JSON.parse(str)}).then((res)=>{
-            wx.hideLoading();
-            that.goodsName = res.name;
-            that.goodsPrice = res.price;
-            that.goodsImage = res.imageUrlList[0];
-            that.priceTotal = that.goodsPrice * that.goodsNum;
-            that.$apply();
-        }).catch((err)=>{
-            wx.hideLoading();
-        });
+        for(var i = 0;i<that.goodsIdList.length;i++){
+            var id = that.goodsIdList[i];
+            var str = {"id":id};
+            var goods = await util.ajax({url:'goods/queryById',para:str})
+            if(that.goodsNumList.length!=0){
+                goods.num = parseInt(that.goodsNumList[i]);
+            }  
+            that.goodsList.push(goods);
+        }
+        console.log(that.goodsList)
+        wx.hideLoading();
+        that.$apply();
+        this.sumPrice();
     }
 
     async payOrder(){
@@ -294,10 +307,15 @@ export default class OrderConfirm extends wepy.page {
             toast.toast(" token 获取失败");
             return;
         }
-        var str = `{"address": "${that.address.name}","goodsIdList": [${that.goodsId}],"phone": "${that.address.phone}","userId": ${that.token}}`;
+        var str = {"address": that.address.name,"goodsIdList": that.goodsIdList,"phone": that.address.phone,"userId": that.token};
         console.log(str);
-        await util.ajax({url:'order/add',para:JSON.parse(str)}).then((res)=>{
+        await util.ajax({url:'order/add',para:str}).then((res)=>{
             wx.hideLoading();
+            if(that.type==0){
+                // 来自购物车的订单
+                var list = [];
+                wepy.setStorageSync('shopcar',list);
+            }
             toast.toast("订单创建成功");
             wepy.navigateBack({delta: 1});
         }).catch((err)=>{

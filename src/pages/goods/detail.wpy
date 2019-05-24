@@ -103,6 +103,7 @@ export default class GoodsDetailPage extends wepy.page {
             if(this.currentOrderType==-1){
                 return;
             }
+
             let token = wepy.getStorageSync('token');
             if(token==""){
                 wepy.navigateTo({
@@ -114,10 +115,27 @@ export default class GoodsDetailPage extends wepy.page {
             
             if(this.currentOrderType==0){
                 // 加入购物车
-                console.log("加入购物车")
+                if(wepy.getStorageSync('shopcar')==""){
+                    var list = [];
+                    wepy.setStorageSync('shopcar',list);
+                }   
+                var oldGoods = wepy.getStorageSync('shopcar');
+                var goods = {"id":this.goodId,"name":this.goodsName,"num":goodsNum,"icon":this.goodsImgList[0].url,"price":this.goodsPrice}
+                oldGoods.push(goods);
+                wepy.setStorageSync('shopcar',oldGoods);
+                setTimeout(() => {
+                    toast.toast("添加成功!")
+                }, 500);
             }else if(this.currentOrderType==1){
+                // 去下单
+                var goodsIdList = [];
+                var goodsNumList =[];
+                goodsIdList.push(this.goodId);
+                goodsNumList.push(goodsNum);
+                var json=JSON.stringify(goodsIdList);
+                var json1=JSON.stringify(goodsNumList);
                 wepy.navigateTo({
-                    url: `/pages/order/confirm?goodId=${this.goodId}&goodsNum=${goodsNum}`
+                    url: `/pages/order/confirm?goodsIdList=${json}&&goodsNumList=${json1}`
                 });
             }
         }
