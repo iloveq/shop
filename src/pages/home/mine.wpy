@@ -109,6 +109,8 @@ export default class CategoryPage extends wepy.page {
 
             await wepy.setStorageSync('userInfo','');
             await wepy.setStorageSync('token','');
+            var list = [];
+            await wepy.setStorageSync('shopcar',list);
             
         }
     }

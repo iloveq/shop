@@ -185,6 +185,7 @@
 <script>
 import wepy from 'wepy';
 import Empty from "@/components/empty"
+import toast from '@/common/utils';
 
 export default class CategoryPage extends wepy.page {
 
@@ -227,7 +228,15 @@ export default class CategoryPage extends wepy.page {
             console.log(index)
             console.log(this.selectedList)
             this.selectedList[index]=!this.selectedList[index];
-            this.isSelectedAll = this.selectedList[index]
+            var trueNum = 0;
+            for(var i=0;i<this.selectedList.length;i++){
+                if(this.selectedList[i]){
+                   trueNum++;
+                }
+            }
+            this.isSelectedAll = trueNum==this.selectedList.length;
+            this.sumPrice()
+            this.sumNum ()
             this.$apply();
             console.log(this.selectedList)
         },
@@ -236,6 +245,9 @@ export default class CategoryPage extends wepy.page {
             for(var i=0;i<this.goodsList.length;i++){
                 this.selectedList[i] = this.isSelectedAll;
             }
+            this.sumPrice()
+            this.sumNum ()
+            console.log(this.selectedList)
             this.$apply();
         }
     }
@@ -243,14 +255,18 @@ export default class CategoryPage extends wepy.page {
     sumPrice () {
         var totalPrice = 0;
         for(var i=0;i<this.goodsList.length;i++){
-             totalPrice += this.goodsList[i].price*this.goodsList[i].num;
+             if(this.selectedList[i]){
+                 totalPrice += this.goodsList[i].price*this.goodsList[i].num;
+             } 
         }
         this.aPrice = totalPrice;
     }
     sumNum () {
         var totalNum = 0;
         for(var i=0;i<this.goodsList.length;i++){
-            totalNum += this.goodsList[i].num;
+            if(this.selectedList[i]){
+                totalNum += this.goodsList[i].num;
+            }
         }
         this.aNum = totalNum;
     }
@@ -261,23 +277,36 @@ export default class CategoryPage extends wepy.page {
         });
         this.isEmpty = wepy.getStorageSync('shopcar')==""
         this.goodsList = wepy.getStorageSync('shopcar');
-        console.log(this.goodsList)
-        this.sumPrice()
-        this.sumNum()
-        wx.hideLoading();
+        this.isSelectedAll = true;
         for(var i=0;i<this.goodsList.length;i++){
             this.selectedList[i]= true;
         }
+        this.sumPrice()
+        this.sumNum()
+        wx.hideLoading();
         this.$apply()
     }
 
     payOrder(){
         // 去下单
+        var trueNum = 0;
+            for(var i=0;i<this.selectedList.length;i++){
+                if(this.selectedList[i]){
+                   trueNum++;
+                }
+            }
+        
+        if(trueNum==0||this.goodsList.length==0){
+            toast.toast("请添加商品")
+            return;
+        }
         var goodsIdList = [];
         var goodsNumList= [];
         for(var i=0;i<this.goodsList.length;i++){
-             goodsIdList.push(this.goodsList[i].id);
-             goodsNumList.push(this.goodsList[i].num);
+             if(this.selectedList[i]){
+                goodsIdList.push(this.goodsList[i].id);
+                goodsNumList.push(this.goodsList[i].num);
+             }  
         }
         var json=JSON.stringify(goodsIdList);
         var json1=JSON.stringify(goodsNumList);
