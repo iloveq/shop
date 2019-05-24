@@ -153,7 +153,7 @@
     <view class="list">
         <view class = "goods-container" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
             <image class src="{{selectedList[index]?'../../image/common/sel.png':'../../image/common/nor.png'}}" @tap="clickCheck({{index}})"/>
-            <view class="goods-content">
+            <view class="goods-content" @tap="jumpDetail({{item.id}})">
                 <image class="goods-icon" src="{{item.icon}}" />
                 <view class="goods-desc">
                     <text class="goods-name">{{item.name}}</text>
@@ -249,6 +249,11 @@ export default class CategoryPage extends wepy.page {
             this.sumNum ()
             console.log(this.selectedList)
             this.$apply();
+        },
+        jumpDetail(id) {
+            wepy.navigateTo({
+                url: `/pages/goods/detail?goodId=${id}`
+            });
         }
     }
 
