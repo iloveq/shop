@@ -1,10 +1,22 @@
 <style lang="less">
+.recommend-title {
+    font-size: 14px;
+    margin-left: 15rpx;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 5px;
+    text-align: start;
+    color: #000;
+   
+}
 </style>
 
 <template>
     <view class="container">
         <view>
             <banner :bannerList.sync="bannerList" :bannerHeight.sync="bannerHeight"></banner>
+            <view class="recommend-title">
+                <text> 热门推荐：</text>
+            </view>
             <recommend :recommendList.sync="recommendList"></recommend>
         </view>
     </view>

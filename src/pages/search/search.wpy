@@ -1,11 +1,19 @@
-<style>
+<style lang="less">
 </style>
 
 <template>
+     <searchBar :searchCtx.sync="searchCtx" :isEdit.sync="isEdit" @search.user="onSearch"></searchBar>
+     <empty :show.sync="isEmpty" message="暂无发现数据"/>
+     <recommend :recommendList.sync="recommendList"></recommend>
 </template>
 
 <script>
 import wepy from 'wepy';
+import Empty from "@/components/empty"
+import toast from '@/common/utils';
+import SearchBar from '@/components/search-bar';
+import util from '@/common/network';
+import Recommend from '@/components/recommend';
 
 export default class SearchDetail extends wepy.page {
      config = {
@@ -14,6 +22,51 @@ export default class SearchDetail extends wepy.page {
         navigationBarTitleText: '搜索商品',
         navigationBarTextStyle: 'white'
     };
+
+    components = {
+        empty:Empty,
+        searchBar:SearchBar,
+        recommend: Recommend
+      
+    }
+
+    data = {
+        isEmpty:true,
+        searchCtx:{"text":"搜索商品"},
+        isEdit:true,
+        recommendList: [],
+        currentPage: 1,
+        hasMore:true
+    }
+
+    onLoad(){
+        
+    }
+
+    methods={
+        onSearch(){
+            this.getRecommendList();
+        }
+    }
+
+    async getRecommendList(){
+        wx.showLoading({
+            title: '加载中'
+        });
+        var that = this;
+        var str = `{"pageNum":${that.currentPage},"pageSize": 6}`;
+        await util.ajax({url:'miaozu/suggestedGoodsList',para:JSON.parse(str)}).then((res)=>{
+            wx.hideLoading();
+            that.isEmpty = false;
+            that.hasMore = res.length!=0&&res.length==6;
+            console.log(that.hasMore)
+            that.recommendList = that.recommendList.concat(res);
+            that.$apply();
+        }).catch((err)=>{
+            wx.hideLoading();
+        });
+        
+    }
 
 }
 </script>

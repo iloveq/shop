@@ -1,15 +1,5 @@
 <!-- 推荐 -->
 <style lang="less">
-
-.recommend-title {
-    font-size: 14px;
-    margin-left: 15rpx;
-    border-bottom: 1px solid #f0f0f0;
-    padding: 5px;
-    text-align: start;
-    color: #000;
-   
-}
 .qlist {
         display:flex;
         flex-wrap: wrap;
@@ -51,9 +41,6 @@
 <template>
     <view class="recommend">
         <view class="recommend-contain">
-            <view class="recommend-title">
-                <text>{{title}}</text>
-            </view>
              <view class="qlist">
                 <view wx:for="{{recommendList}}" wx:for-index="index" wx:for-item="item" wx:key="index" 
                     class="qlist-cover {{ index % 2 == 0 ? 'qlist-line' : ''}}  {{ index == 2 || index == 3 ? 'qlist-line2' : ''}}"  
@@ -77,10 +64,6 @@ export default class Recommend extends wepy.component {
             default: []
         }
     }
-
-    data = {
-        title:this.props.recommendList.length==0?"":" 热门推荐："
-    };
     
     methods = {
         jumpDetail(id,title) {

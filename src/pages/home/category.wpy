@@ -59,7 +59,7 @@
 
 <template>
   <view>
-    <searchBar :searchCtx.sync="searchCtx" @onSearch.user="search"></searchBar>
+    <searchBar :text.sync="text" @search.user="doSearch"></searchBar>
     <view class="category" >
     <scroll-view class="category-left" scroll-y scroll-with-animation="true" >
       <view class="name {{item.active? 'active':''}}" wx:for="{{categoryList}}"  wx:for-item="item" wx:for-index="index" wx:key="index" data-id="{{item.id}}" @tap="changeCate">
@@ -98,16 +98,26 @@ export default class CategoryPage extends wepy.page {
     };
 
     data = {
-        searchCtx:{"text":"搜索商品"},
+        text:"搜索商品",
         categoryList: {},
         goodsList: {},
         currentPage:1
     };
 
     methods = {
-        search(){
+        doSearch(){
             wepy.navigateTo({url: '/pages/search/search'});
-        }
+        },
+        changeCate(event) {
+            let id = event.currentTarget.dataset.id;
+            console.log(id);
+            this.currentPage=1;
+            for (var i = 0; i < this.categoryList.length; i++) {
+                this.categoryList[i].active=this.categoryList[i].id==id;  
+            }
+            this.$apply();
+            this.getGoodsList(id);
+        },
     }
 
     onLoad(){
@@ -149,18 +159,7 @@ export default class CategoryPage extends wepy.page {
         
     }
 
-    methods={
-        changeCate(event) {
-            let id = event.currentTarget.dataset.id;
-            console.log(id);
-            this.currentPage=1;
-            for (var i = 0; i < this.categoryList.length; i++) {
-                this.categoryList[i].active=this.categoryList[i].id==id;  
-            }
-            this.$apply();
-            this.getGoodsList(id);
-        },
-    }
+  
 
 
 }

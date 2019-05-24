@@ -26,13 +26,29 @@
         }
     } 
 }
+
+.view-hide{ 
+    display: none; 
+} 
+
+.other-desc{
+    margin-left: 20px;
+    display: flex;
+    font-size: 11px;
+    flex-direction: column;
+    margin-right: 20rpx;
+    color: black;
+}
+
 </style>
 
 <template>
   <view class="search-toolbar" >
-        <view class="search-item" @tap="onClick()">
+        <view class="search-item">
             <image class="search-img" src="../image/common/search.png"></image>
-            <view class="search-text">{{searchCtx.text}}</view>
+            <view class="{{isEdit?'view-hide':'search-text'}}"  @tap="clickSearch">{{text}}</view>
+            <input class="{{isEdit?'search-text':'view-hide'}}" type="string" placeholder="{{text}}" 
+                    bindinput="inputCtx" maxlength="30" value="{{searchText}}" bindconfirm="clickSearch"/>
         </view>
   </view>
 </template>
@@ -40,20 +56,29 @@
 
 <script>
 import wepy from 'wepy';
-export default class SearchBar extends wepy.component {
+export default class SearchActionBar extends wepy.component {
     props = {
-        searchCtx: {
-            type: Object,
-            default: {}
+        text: {
+            type: String,
+            default: ""
+        },
+        isEdit: {
+            type: Boolean,
+            default: false
         }
     };
 
-    data = {};
+    data = {
+       searchText:""
+    };
 
     methods = {
-         onClick() {
-            this.$emit('onSearch');
-        }
+        clickSearch() {
+            this.$emit('search',"");
+        },
+        inputCtx(e){
+            this.searchText = e.detail.value
+        },
     };
 }
 </script>
