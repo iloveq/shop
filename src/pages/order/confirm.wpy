@@ -313,8 +313,17 @@ export default class OrderConfirm extends wepy.page {
             wx.hideLoading();
             if(that.type==0){
                 // 来自购物车的订单
-                var list = [];
-                wepy.setStorageSync('shopcar',list);
+                var goodsList = wepy.getStorageSync('shopcar');
+              
+                for(var i = 0;i<that.goodsIdList.length;i++){
+                    var id = that.goodsIdList[i];
+                    for(var j = 0;j<goodsList.length;j++){
+                        if(goodsList[j].id == id){
+                            goodsList.splice(j, 1);
+                        }
+                    }
+                }
+               wepy.setStorageSync('shopcar',goodsList);
             }
             toast.toast("订单创建成功");
             wepy.navigateBack({delta: 1});
